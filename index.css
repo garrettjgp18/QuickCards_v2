@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+
+.wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    width: 25%;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.4);;
+}
+
+
+#logo {
+    font-family: 'Rubik Doodle Shadow', system-ui;
+    text-align: center;
+    margin-top: 30px;
+    letter-spacing: 5px;
+    font-size: 50px;
+}
+
+#description {
+    font-family: 'Rubik Doodle Shadow', system-ui;
+    text-align: center;
+}
+
+#userForm {
+    text-align: center;
+    padding-top: 60px;
+    font-size: 24px;
+}
+
+#userInput, #userInputVideo{
+    text-align: center;
+    width: 100%;
+    border: 1px solid rgb(16, 16, 16);
+    border-radius: 10px;
+    height: 30px;
+    font-size: 18px;
+}
+
+#choice {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    text-align: center;
+}
+
+
+#apiLabel {
+    font-size: 25px;
+    margin-top: 50px;
+}
+
+#apiKey {
+    text-align: center;
+    width: 53%;
+    border: 1px solid rgb(16, 16, 16);
+    border-radius: 10px;
+    height: 30px;
+    font-size: 18px;
+
+    margin-bottom: 40px;
+}
+
+
+#seperator {
+    width: 90%;
+    border: 1.5px solid rgb(35, 35, 35);
+    border-radius: 200px;
+}
+
+.cardArea {
+    background-color: rgba(228, 228, 228, 0.66);
+    width: 75%;
+    padding-top: 50px;
+    padding-left: 50px;
+    font-size: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.tutorial, #instruction{
+    width: 90%;
+    height: 40%;
+}
+
+
+.cards{
+    background-color: red;
+    height: 50%;
+    width: 90%;
+    
+}
+
+
+#instructions {
+    width: 60%;
+}
