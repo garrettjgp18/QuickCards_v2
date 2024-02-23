@@ -2,10 +2,13 @@
   "name": "quickcards_v2-1",
   "version": "1.0.0",
   "description": "Flashcards dynamically generated from OpenAI",
-  "main": "index.js",
+  "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon /backend/server.js",
+    "dev": "cd frontend/quickcards && npm run dev"
   },
+
   "author": "",
   "license": "ISC",
   "dependencies": {
