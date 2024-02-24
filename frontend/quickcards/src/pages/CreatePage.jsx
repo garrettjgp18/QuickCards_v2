@@ -12,15 +12,52 @@ export default function Navbar(){
         setCurrentId(id);
     }
 
-
+    // Stays in frontend
     const uploadContent = () =>{
         console.log("Upload Content");
     }
 
 
-    const submitData = () =>{
+    /* 
+    Purpose: Send POST request to NodeJS server with user selected components
+    */
+    const submitData = async () => {
+        // Assign JSON that holds data being sent - currentID is a useState in React (above)
+        const dataObject = {
+            mediaType: `${currentId}`
+        };
+    
+        try {
+            // Send a Fetch request to our full URL (including endpoint)
+            const response = await fetch('http://127.0.0.1:3000/api', {
+                // Set method as Post for sending data
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // Convert dataObject to JSON and set as request body
+                body: JSON.stringify(dataObject)
+            });
+    
+            // Check if the response is okay
+            if (!response.ok) {
+                // If not okay, throw an error
+                throw new Error("No network response");
+            }
+    
+            // Await response from NodeJS server
+            const responseData = await response.json();
+            // Log the response from the server
+            console.log("Response from server: " + responseData.message);
+        } catch(error) {
+            // Catch any errors that occur during the fetch operation
+            console.log("Error sending data to server: " + error);
+        }
+    
+        // Log a message indicating that the data submission process is complete
         console.log("Submit Data");
     }
+    
 
     return (
         <>
