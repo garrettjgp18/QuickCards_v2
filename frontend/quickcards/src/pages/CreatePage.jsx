@@ -5,14 +5,14 @@ export default function Navbar(){
     // Define state variables (hooks)
     const [currentId, setCurrentId] = useState("Video");
     const [numberOfCards, setNumberOfCards] = useState(""); // State variable for number of cards - setNumberOfCards will update value once changed
-    const [currentSchema, setCurrentSchema] = useState(""); 
+    const [currentSchema, setCurrentSchema] = useState(""); // Same goes here
 
     // Function to update number of cards state
     const handleNumberOfCardsChange = (event) => {
         setNumberOfCards(event.target.value);
     }
 
-
+    // Function to update the schema 
     const changeCurrentSchema = (event) => {
         setCurrentSchema(event.target.value);
     }
@@ -25,14 +25,17 @@ export default function Navbar(){
         console.log("Upload Content");
     }
 
+    // Once "Generate Cards" button is clicked, start this asyncronus process
     const submitData = async () => {
+        // Create a JSON transfer structure
         const dataObject = {
-            mediaType: `${currentId}`,
-            numberOfCards: numberOfCards,
-            currentSchema: currentSchema
+            mediaType: `${currentId}`, // Holds current state of ID (use mediaType in server.js)
+            numberOfCards: numberOfCards, // Holds current state of numberOfCards
+            currentSchema: currentSchema // Holds current state of schema
         };
 
         try {
+            // Start a fetch request using POST  method and send dataObject as payload
             const response = await fetch('http://127.0.0.1:3000/api', {
                 method: 'POST',
                 headers: {
@@ -41,10 +44,12 @@ export default function Navbar(){
                 body: JSON.stringify(dataObject)
             });
 
+            // If this appears, make sure both NodeJS and ReactJS clients are running in SEPERATE terminals
             if (!response.ok) {
                 throw new Error("No network response");
             }
 
+            // Wait for response from NodeJS server, once recieved, print to developer console
             const responseData = await response.json();
             console.log("Response from server: " + responseData.message);
         } catch(error) {

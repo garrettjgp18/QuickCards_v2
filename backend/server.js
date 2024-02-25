@@ -27,18 +27,19 @@ app.use(cors());
 // Handles POST request to the /api endpoint
 app.post('/api', (req, res) => {
   const recievedData = req.body;
-  // Ensure button information was correct
+  // Format data and display in terminal running NodeJS to ensure data is correct
   console.log(`Recieved from React:\n Media Type: ${recievedData.mediaType}\n Number of Cards = ${recievedData.numberOfCards}\n Schema: ${recievedData.currentSchema}`);
 
 
-  // Send message back to React page
+  // Send message back to React page (line 53 + 54 from CreatePage.jsx)
   res.json({message: "Data Recieved from NodeJS"});
 });
 
 
 // Handles GET request to the API endpoint
+// Mainly just so error page goes away
 app.get('/api', (req, res) => {
-  res.send('This is the API endpoint');
+  res.send(' Hello :) ');
 });
 
 
