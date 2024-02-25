@@ -86,7 +86,8 @@ export default function Navbar(){
                 </div>
                 <div className="w-full h-[12vh] md:w-1/2 flex flex-row gap-4 items-center align-middle">
                     <h1 className="text-gray-600 text-lg font-medium">Number of Cards:</h1>
-                    <input type="text" className="border rounded w-1/5 p-2" value={numberOfCards} onChange={handleNumberOfCardsChange} placeholder="15" /> // Assigning value ensures the state is always in sync and controlled.
+                    {/* // Assigning value ensures the state is always in sync and controlled. Once value is changed, update numberOfCards value in state variable*/}
+                    <input type="text" className="border rounded w-1/5 p-2" value={numberOfCards} onChange={handleNumberOfCardsChange} placeholder="15" />
                 </div>
             </div>
 
