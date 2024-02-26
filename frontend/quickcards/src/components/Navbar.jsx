@@ -23,10 +23,10 @@ export default function Navbar(){
 
                     {/*Text shows when not mobile */}
                     <ul className='flex w-full h-full flex-row justify-center items-center gap-6 text-xl text-white font-light'>
-                        <NavLink to="/create" className={({ isActive }) => isActive ? 'text-teal-500 hidden sm:block' : 'hover:text-teal-500 hover:scale-110 active:scale-95'}>
+                        <NavLink to="/create" className={({ isActive }) => isActive ? 'text-teal-500 hidden md:block' : 'hover:text-teal-500 hover:scale-110 active:scale-95'}>
                             <li className='cursor-pointer'>Create</li>
                         </NavLink>
-                        <NavLink to="/words" className={({ isActive }) => isActive ? 'text-teal-500 hidden sm:block' : 'hover:text-teal-500 hover:scale-110 active:scale-95'}>
+                        <NavLink to="/words" className={({ isActive }) => isActive ? 'text-teal-500 hidden md:block' : 'hover:text-teal-500 hover:scale-110 active:scale-95'}>
                             <li className=' cursor-pointer'>My Words</li>
                         </NavLink>
                     </ul>
