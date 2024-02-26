@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
+
 export default function Navbar(){
 
+  
     // Define state variables (hooks)
     const [currentId, setCurrentId] = useState("Video");
     const [numberOfCards, setNumberOfCards] = useState(""); // State variable for number of cards - setNumberOfCards will update value once changed
