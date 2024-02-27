@@ -25,20 +25,20 @@ app.use(cors());
 
 
 // Handles POST request to the /api endpoint
-app.post('/api', (req, res) => {
+app.post('/create', (req, res) => {
   const recievedData = req.body;
   // Format data and display in terminal running NodeJS to ensure data is correct
   console.log(`Recieved from React:\n Media Type: ${recievedData.mediaType}\n Number of Cards = ${recievedData.numberOfCards}\n Schema: ${recievedData.currentSchema}`);
 
 
   // Send message back to React page (line 53 + 54 from CreatePage.jsx)
-  res.json({message: "Data Recieved from NodeJS"});
+  res.json({message: "This is a message from NodeJS server -> Test complete"});
 });
 
 
 // Handles GET request to the API endpoint
 // Mainly just so error page goes away
-app.get('/api', (req, res) => {
+app.get('/create', (req, res) => {
   res.send(' Hello :) ');
 });
 
@@ -48,5 +48,5 @@ app.get('/api', (req, res) => {
 
 // Ensure server is running and endpoint is working
 app.listen(port, () => {
-  console.log(`Server running at http://${hostname}:${port}/api`);
+  console.log(`Server running at http://${hostname}:${port}/create`);
 });

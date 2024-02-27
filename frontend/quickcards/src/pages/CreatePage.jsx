@@ -38,7 +38,7 @@ export default function Navbar(){
 
         try {
             // Start a fetch request using POST  method and send dataObject as payload
-            const response = await fetch('http://127.0.0.1:3000/api', {
+            const response = await fetch('http://127.0.0.1:3000/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
