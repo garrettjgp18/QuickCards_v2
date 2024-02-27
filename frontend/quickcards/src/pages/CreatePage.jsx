@@ -19,21 +19,29 @@ export default function Navbar(){
         setCurrentSchema(event.target.value);
     }
 
+    // Function to update mode 
     const selectMode = (id) => {
         setCurrentId(id);
     }
 
+   
+    // Opens users file manager so they can select a media
     const uploadContent = () => {
         console.log("Upload Content");
     }
 
     // Once "Generate Cards" button is clicked, start this asyncronus process
     const submitData = async () => {
+
+        let promptResult = await mediaQueryHandler(currentId);
+
+        console.log(promptResult);
         // Create a JSON transfer structure
         const dataObject = {
             mediaType: `${currentId}`, // Holds current state of ID (use mediaType in server.js)
             numberOfCards: numberOfCards, // Holds current state of numberOfCards
-            currentSchema: currentSchema // Holds current state of schema
+            currentSchema: currentSchema, // Holds current state of schema
+            result: promptResult // Holds extracted text
         };
 
         try {
@@ -60,6 +68,33 @@ export default function Navbar(){
 
         console.log("Transfer complete");
     }
+
+
+    // Changes the method in JSON structure that will be called when "Generate Cards" button is pressed
+    // Holds off until variable is ready to be initilized 
+    const mediaQueryHandler = async (mediaType) => {
+
+        let promptResult = "";
+
+        switch(mediaType) {
+            case 'Video':
+                // Set a variable within the JSON structure = result of method
+                promptResult = "VIDEO";
+                break;
+            case 'PDF':
+                promptResult = "PDF";
+                break;
+            case 'Audio':
+                promptResult = "AUDIO";
+                break;
+            default:
+                promptResult = "TEXT";
+                break;
+        }
+
+        return promptResult;
+    }
+
 
     return (
         <>

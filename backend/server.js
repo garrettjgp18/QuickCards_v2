@@ -28,7 +28,7 @@ app.use(cors());
 app.post('/create', (req, res) => {
   const recievedData = req.body;
   // Format data and display in terminal running NodeJS to ensure data is correct
-  console.log(`Recieved from React:\n Media Type: ${recievedData.mediaType}\n Number of Cards = ${recievedData.numberOfCards}\n Schema: ${recievedData.currentSchema}`);
+  console.log(`Recieved from React:\n Media Type: ${recievedData.mediaType}\n Number of Cards = ${recievedData.numberOfCards}\n Schema: ${recievedData.currentSchema}\n ${recievedData.result}\n\n`);
 
 
   // Send message back to React page (line 53 + 54 from CreatePage.jsx)
