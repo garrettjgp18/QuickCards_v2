@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+// Import the methods from the extraction APIs here
 
 export default function Navbar(){
 
@@ -33,14 +34,15 @@ export default function Navbar(){
     // Once "Generate Cards" button is clicked, start this asyncronus process
     const submitData = async () => {
 
+        // Calls the function that determines the extraction method to call
         let promptResult = await mediaQueryHandler(currentId);
-
         console.log(promptResult);
+
         // Create a JSON transfer structure
         const dataObject = {
             mediaType: `${currentId}`, // Holds current state of ID (use mediaType in server.js)
             numberOfCards: numberOfCards, // Holds current state of numberOfCards
-            currentSchema: currentSchema, // Holds current state of schema
+            currentSchema: currentSchema, // Holds current state of schema 
             result: promptResult // Holds extracted text
         };
 
@@ -78,7 +80,7 @@ export default function Navbar(){
 
         switch(mediaType) {
             case 'Video':
-                // Set a variable within the JSON structure = result of method
+                // Placeholder values. Once extraction methods are created, change to promptResult = pdfExtract() and so on
                 promptResult = "VIDEO";
                 break;
             case 'PDF':
