@@ -2,6 +2,9 @@ import Navbar from './components/Navbar'
 import CreatePage from './pages/CreatePage'
 import Landing from './pages/Landing'
 import Words from './pages/Words'
+import Register from './pages/Register'
+import LogIn from './pages/LogIn'
+
 import { Route, Routes, Router } from 'react-router-dom'
 
 function App() {
@@ -11,7 +14,7 @@ function App() {
   const MainLayout = ({ children }) => (
     <>
       <Navbar />
-      <div>{children}</div>
+      {children}
     </>
   );
   
@@ -23,6 +26,8 @@ function App() {
         <Route path = "/" element = { <Landing /> } />
         <Route path="/create" element={<MainLayout><CreatePage /></MainLayout>} />
         <Route path="/words" element={<MainLayout><Words /></MainLayout>} />
+        <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
+        <Route path="/login" element={<MainLayout><LogIn /></MainLayout>} />
       </Routes>
     </div>
     </>

@@ -2,7 +2,11 @@
 module.exports = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'neural': "url('src/assets/neural.png')",
+      }
+    },
     screens: {
       'sm': '640px',
       // => @media (min-width: 640px) { ... }

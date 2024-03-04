@@ -31,11 +31,17 @@ export default function Landing(){
 
                         <div className = "flex flex-row gap-8 align-middle w-full h-16">
                             <button className="bg-teal-500 rounded-md p-4 px-6 text-white hover:bg-teal-600 active:scale-95">
+                                {/* Get Started Button -> Redirects to create page for now */}
                                 <Link to="/create" style={{ color: 'inherit', textDecoration: 'inherit'}}>
                                     Get Started
                                 </Link>
                             </button>
-                            <h1 className='text-white text-xl mt-4 hover:text-teal-500 cursor-pointer active:scale-95'>Learn More</h1>
+
+                            {/* Sign in Text to the right of button */}
+                            <Link to="/login" className='text-white text-xl mt-4 hover:text-teal-500 cursor-pointer active:scale-95'>
+                            Log In
+                            </Link>
+
                         </div>
                     </div>
                 </div>

@@ -29,6 +29,14 @@ export default function Words(){
                     Back
                   </th>
 
+                  {/* Download CSV button */}
+                  <th className="bg-gray-50 text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider flex justify-end">
+                    <button className="bg-teal-500 rounded-md p-3 text-white hover:bg-teal-600 active:scale-95 flex flex-row gap-2 m-3">
+                        <span className="hidden md:block mt-2">Download CSV</span>
+                        <span className="text-2xl md:text-xl"><i className="bi-download"></i></span>
+                    </button>
+                  </th>
+
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">

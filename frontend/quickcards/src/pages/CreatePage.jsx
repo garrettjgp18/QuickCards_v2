@@ -123,10 +123,12 @@ export default function Navbar(){
             </div>
 
             <hr className="bg-gray-200 h-0.5 w-full md:w-[90%] mr-auto ml-auto mt-1" />
-
+              {/*Container below the tabs */}
             <div className="flex flex-col md:flex-row gap-0 w-4/5 mr-auto ml-auto mt-8">
                 <div className="w-full md:w-1/2 h-[12vh] flex items-center align-middle">
-                    <button onClick={uploadContent} className="bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95">Upload {currentId}</button>
+                     {/*Upload Content Button */}
+                    {/*If "Text" tab is selected - button does not render */}
+                    <button onClick={uploadContent} className={`bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95 ${currentId == "Text" ? "hidden" : "" }`}>Upload {currentId}</button>
                 </div>
                 <div className="w-full h-[12vh] md:w-1/2 flex flex-row gap-4 items-center align-middle">
                     <h1 className="text-gray-600 text-lg font-medium">Number of Cards:</h1>
