@@ -97,7 +97,6 @@ export default function Navbar(){
         return promptResult;
     }
 
-
     return (
         <>
         <div className="min-h-[70vh] h-auto w-3/4 border m-auto mt-12 rounded-xl p-4 shadow-lg">
@@ -127,8 +126,12 @@ export default function Navbar(){
             <div className="flex flex-col md:flex-row gap-0 w-4/5 mr-auto ml-auto mt-8">
                 <div className="w-full md:w-1/2 h-[12vh] flex items-center align-middle">
                      {/*Upload Content Button */}
-                    {/*If "Text" tab is selected - button does not render */}
-                    <button onClick={uploadContent} className={`bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95 ${currentId == "Text" ? "hidden" : "" }`}>Upload {currentId}</button>
+                    {/*If "Text" or "Video" tab is selected - button does not render */}
+                    <button onClick={uploadContent} className={`bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95 ${currentId == "Text" || currentId == "Video" ? "hidden" : "" }`}>Upload {currentId}</button>
+
+                    {/* Render Input Form if User selects Video  */}
+                    <input type="text" className= {`border rounded w-5/6 p-2 ${currentId == "Video" ? "block" : "hidden" }`} placeholder="Enter Youtube URL" />
+
                 </div>
                 <div className="w-full h-[12vh] md:w-1/2 flex flex-row gap-4 items-center align-middle">
                     <h1 className="text-gray-600 text-lg font-medium">Number of Cards:</h1>
