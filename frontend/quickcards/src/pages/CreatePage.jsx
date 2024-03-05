@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-// Import the methods from the extraction APIs here
+import React, { useState, useRef } from 'react';
 
 export default function Navbar(){
 
@@ -25,13 +23,27 @@ export default function Navbar(){
         setCurrentId(id);
     }
 
-   
-    // Opens users file manager so they can select a media
-    const uploadContent = () => {
-        console.log("Upload Content");
+    // Reference for the file input element
+    const fileInputRef = useRef(null);
+
+    // Function to open file dialog
+    const openFileDialog = () => {
+        fileInputRef.current.click();
     }
 
-    // Once "Generate Cards" button is clicked, start this asyncronus process
+    // Function to handle file selection
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        console.log("Uploaded file:", file);
+    }
+
+    // Set file types the system will accept based on the selected media type
+    const acceptedFileTypes = {
+        PDF: ".pdf",
+        Audio: ".mp3"
+    };
+
+    // Once "Generate Cards" button is clicked, start this asynchronous process
     const submitData = async () => {
 
         // Calls the function that determines the extraction method to call
@@ -47,7 +59,7 @@ export default function Navbar(){
         };
 
         try {
-            // Start a fetch request using POST  method and send dataObject as payload
+            // Start a fetch request using POST method and send dataObject as payload
             const response = await fetch('http://127.0.0.1:3000/create', {
                 method: 'POST',
                 headers: {
@@ -56,12 +68,12 @@ export default function Navbar(){
                 body: JSON.stringify(dataObject)
             });
 
-            // If this appears, make sure both NodeJS and ReactJS clients are running in SEPERATE terminals
+            // If this appears, make sure both NodeJS and ReactJS clients are running in SEPARATE terminals
             if (!response.ok) {
                 throw new Error("No network response");
             }
 
-            // Wait for response from NodeJS server, once recieved, print to developer console
+            // Wait for response from NodeJS server, once received, print to developer console
             const responseData = await response.json();
             console.log("Response from server: " + responseData.message);
         } catch(error) {
@@ -71,9 +83,8 @@ export default function Navbar(){
         console.log("Transfer complete");
     }
 
-
     // Changes the method in JSON structure that will be called when "Generate Cards" button is pressed
-    // Holds off until variable is ready to be initilized 
+    // Holds off until variable is ready to be initialized 
     const mediaQueryHandler = async (mediaType) => {
 
         let promptResult = "";
@@ -127,10 +138,22 @@ export default function Navbar(){
                 <div className="w-full md:w-1/2 h-[12vh] flex items-center align-middle">
                      {/*Upload Content Button */}
                     {/*If "Text" or "Video" tab is selected - button does not render */}
-                    <button onClick={uploadContent} className={`bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95 ${currentId == "Text" || currentId == "Video" ? "hidden" : "" }`}>Upload {currentId}</button>
+                    <button onClick={openFileDialog} className={`bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95 ${currentId === "Text" || currentId === "Video" ? "hidden" : "" }`}>Upload {currentId}</button>
+
+                    {/* File input element */}
+                    {/* Basically, useRef is creating a "refrence" to the "upload" button, allowing it to be used throughout the code. When the upload button is clicked, it
+                        launches the uploadFileDialog method, which refrences the input field below for the data. Setting the display to "none" removes it from the visual.
+                    */}
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        style={{ display: 'none' }}
+                        onChange={handleFileUpload}
+                        accept={acceptedFileTypes[currentId]}
+                    />
 
                     {/* Render Input Form if User selects Video  */}
-                    <input type="text" className= {`border rounded w-5/6 p-2 ${currentId == "Video" ? "block" : "hidden" }`} placeholder="Enter Youtube URL" />
+                    <input type="text" className= {`border rounded w-5/6 p-2 ${currentId === "Video" ? "block" : "hidden" }`} placeholder="Enter Youtube URL" />
 
                 </div>
                 <div className="w-full h-[12vh] md:w-1/2 flex flex-row gap-4 items-center align-middle">
@@ -149,15 +172,8 @@ export default function Navbar(){
 
                 {/*Submit Button */}
                 <button onClick={submitData} className="bg-teal-500 rounded-md p-4 w-full mt-4 text-white hover:bg-teal-600 active:scale-95">Generate Cards</button>
-
-
-
             </div>
-
-
-
         </div>
-
         </>
-        )
+    );
 }
