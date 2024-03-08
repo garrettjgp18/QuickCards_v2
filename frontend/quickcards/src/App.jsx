@@ -4,6 +4,7 @@ import Landing from './pages/Landing'
 import Words from './pages/Words'
 import Register from './pages/Register'
 import LogIn from './pages/LogIn'
+import Settings from './pages/Settings'
 
 import { Route, Routes, Router } from 'react-router-dom'
 
@@ -28,6 +29,7 @@ function App() {
         <Route path="/words" element={<MainLayout><Words /></MainLayout>} />
         <Route path="/register" element={<MainLayout><Register /></MainLayout>} />
         <Route path="/login" element={<MainLayout><LogIn /></MainLayout>} />
+        <Route path="/settings" element={<MainLayout><Settings /></MainLayout>} />
       </Routes>
     </div>
     </>
