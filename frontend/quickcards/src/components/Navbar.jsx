@@ -26,6 +26,9 @@ export default function Navbar(){
                         <NavLink to="/words" className={({ isActive }) => isActive ? 'text-teal-500' : 'hover:text-teal-500 hover:scale-110 active:scale-95'}>
                             <li className=' cursor-pointer'>My Words</li>
                         </NavLink>
+                        <NavLink to="/settings" className={({ isActive }) => isActive ? 'text-teal-500' : 'hover:text-teal-500 hover:scale-110 active:scale-95'}>
+                            <li className=' cursor-pointer'>Settings</li>
+                        </NavLink>
                     </ul>
 
                     {/*Render Caret -> Expand icon when display is mobile */}
