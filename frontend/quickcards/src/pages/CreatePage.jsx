@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import axios from 'axios'; //Axios is a promise-based HTTP Client for node.js and the browser
 
 export default function Navbar(){
 
@@ -32,10 +33,38 @@ export default function Navbar(){
     }
 
     // Function to handle file selection
-    const handleFileUpload = (event) => {
+    const handleFileUpload = async (event) => {
+        // Retrieve the first selected file from the file input event
         const file = event.target.files[0];
-        console.log("Uploaded file:", file);
-    }
+        // Check if a file was actually selected
+        if (!file) {
+            console.log("No file selected.");
+            return;
+        }
+        // Log the name of the uploaded file for verification
+        console.log("Uploaded file:", file.name);
+    
+        // Determine the file type (e.g., PDF, Audio) to handle accordingly
+        //This checks if the MIME type of the uploaded file is "application/pdf", indicating it's a PDF file.
+        //If this condition is true, fileType is assigned the value "PDF".
+        //If it's false, the code after the colon (:) is evaluated next.
+        const fileType = file.type === "application/pdf" ? "PDF" : 
+        
+        //This part is reached if the first condition is false, meaning the file is not a PDF.
+        //It checks if the MIME type of the file starts with "audio/", a common prefix for audio files (e.g., "audio/mp3", "audio/wav").
+        //If this condition is true, fileType is assigned the value "Audio".
+        //If it's false, the value after the second colon (:) is used.
+        file.type.startsWith("audio/") ? "Audio" : 
+        
+        //This value is assigned if both previous conditions are false, meaning the file is neither a PDF nor an audio file as defined by your conditions.
+        "Unsupported";
+        
+        // Call mediaQueryHandler to process the file based on its type, passing both type and file
+        const extractedData = await mediaQueryHandler(fileType, file);
+        
+        // Log the result of the file handling, which could be processed data or an error message
+        console.log("Handled File Data:", extractedData);
+    };
 
     // Set file types the system will accept based on the selected media type
     const acceptedFileTypes = {
@@ -83,9 +112,35 @@ export default function Navbar(){
         console.log("Transfer complete");
     }
 
+    // Asynchronously processes a PDF file by sending it to a server endpoint for processing
+    async function processPDF(pdfFile) {
+        // Create a FormData object to hold the file data for the POST request
+        const formData = new FormData();
+        // Append the selected PDF file under the key 'file', which the server expects
+        formData.append('file', pdfFile);
+
+        try {
+            // Send a POST request to the server's '/pdf-process' endpoint with the FormData
+            // Axios automatically sets the appropriate `Content-Type` header for multipart/form-data
+            const response = await axios.post(`http://127.0.0.1:3000/pdf-process`, formData);
+
+            // The response from the server is expected to contain the processed data
+            // For instance, it could be the text extracted from the PDF, organized in arrays
+            const extractedData = response.data;
+            // Return the processed data for further use
+            return extractedData;
+        } catch (error) {
+            // Log any errors that occur during the file upload or processing
+            console.error('Error processing PDF:', error);
+            // Return a default error message to handle the error gracefully
+            return "Error in PDF processing";
+        }
+    }
+
+
     // Changes the method in JSON structure that will be called when "Generate Cards" button is pressed
     // Holds off until variable is ready to be initialized 
-    const mediaQueryHandler = async (mediaType) => {
+    const mediaQueryHandler = async (mediaType, file) => {
 
         let promptResult = "";
 
@@ -95,7 +150,8 @@ export default function Navbar(){
                 promptResult = "VIDEO";
                 break;
             case 'PDF':
-                promptResult = "PDF";
+                // PDF processing logic - calling processPDF function to handle PDFs
+                promptResult = await processPDF(file);
                 break;
             case 'Audio':
                 promptResult = "AUDIO";
