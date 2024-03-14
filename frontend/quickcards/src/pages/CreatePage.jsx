@@ -32,6 +32,11 @@ export default function Navbar(){
         fileInputRef.current.click();
     }
 
+    // Add a state to hold the uploaded file
+    const [uploadedFile, setUploadedFile] = useState(null);
+    
+    const [fileType, setFileType] = useState(""); // Add this to store the file type
+    
     // Function to handle file selection
     const handleFileUpload = async (event) => {
         // Retrieve the first selected file from the file input event
@@ -48,7 +53,7 @@ export default function Navbar(){
         //This checks if the MIME type of the uploaded file is "application/pdf", indicating it's a PDF file.
         //If this condition is true, fileType is assigned the value "PDF".
         //If it's false, the code after the colon (:) is evaluated next.
-        const fileType = file.type === "application/pdf" ? "PDF" : 
+        const determinedFileType = file.type === "application/pdf" ? "PDF" : 
         
         //This part is reached if the first condition is false, meaning the file is not a PDF.
         //It checks if the MIME type of the file starts with "audio/", a common prefix for audio files (e.g., "audio/mp3", "audio/wav").
@@ -59,11 +64,15 @@ export default function Navbar(){
         //This value is assigned if both previous conditions are false, meaning the file is neither a PDF nor an audio file as defined by your conditions.
         "Unsupported";
         
+        // ######## Old implementation, removed besuase mediQueryHandler was called twice, worried about unnessecary overhead #########
         // Call mediaQueryHandler to process the file based on its type, passing both type and file
-        const extractedData = await mediaQueryHandler(fileType, file);
+        //const extractedData = await mediaQueryHandler(fileType, file);
+
+        setUploadedFile(file); // Store the uploaded file in state
+        setFileType(determinedFileType); // Also store the determined file type
         
         // Log the result of the file handling, which could be processed data or an error message
-        console.log("Handled File Data:", extractedData);
+        //console.log("Handled File Data:", extractedData);
     };
 
     // Set file types the system will accept based on the selected media type
@@ -74,9 +83,14 @@ export default function Navbar(){
 
     // Once "Generate Cards" button is clicked, start this asynchronous process
     const submitData = async () => {
-
+        
+        // Make sure file type is either PDF or audio
+        if (!uploadedFile || fileType === "Unsupported") {
+            console.log("No supported file to process. Please upload a PDF or Audio file.");
+            return;
+        }
         // Calls the function that determines the extraction method to call
-        let promptResult = await mediaQueryHandler(currentId);
+        let promptResult = await mediaQueryHandler(fileType, uploadedFile);
         console.log(promptResult);
 
         // Create a JSON transfer structure
