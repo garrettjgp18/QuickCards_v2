@@ -43,7 +43,7 @@ app.post('/create', (req, res) => {
     Media Type: ${recievedData.mediaType}\n 
     Number of Cards = ${recievedData.numberOfCards}\n 
     Schema: ${recievedData.currentSchema}\n 
-    ${recievedData.result}\n\n`);
+    Extracted: ${recievedData.result}\n\n`); // Call OpenAI method and pass all variables in?
 
 
   // Send message back to React page (line 53 + 54 from CreatePage.jsx)
@@ -51,11 +51,7 @@ app.post('/create', (req, res) => {
 });
 
 
-// Handles GET request to the API endpoint
-// Mainly just so error page goes away
-app.get('/create', (req, res) => {
-  res.send(' You are currently on the /create endpoint ');
-});
+
 
 
 // CREATE -------------------------------------------------------
@@ -103,6 +99,7 @@ app.post('/pdf-process', upload.single('file'), async (req, res) => {
         console.log("Extracted Text Arrays:", textArrays); // Optionally log the arrays for verification
 
         // Send the arrays of extracted text back to the client side
+        // TODO: Call OpenAI method from OpenAI.js, pass in textArrays
         res.send({ extractedTextArrays: textArrays });
 
         // Optionally, delete the file after processing to clean up server storage
@@ -119,6 +116,12 @@ app.post('/pdf-process', upload.single('file'), async (req, res) => {
   }
 });
 
+
+// Handles GET request to the API endpoint
+// Mainly just so error page goes away
+app.get('/create', (req, res) => {
+  res.send(' You are currently on the /create endpoint ');
+});
 
 
 // Ensure server is running and endpoint is working
