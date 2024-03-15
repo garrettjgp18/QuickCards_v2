@@ -51,11 +51,7 @@ app.post('/create', (req, res) => {
 });
 
 
-// Handles GET request to the API endpoint
-// Mainly just so error page goes away
-app.get('/create', (req, res) => {
-  res.send(' You are currently on the /create endpoint ');
-});
+
 
 
 // CREATE -------------------------------------------------------
@@ -119,6 +115,12 @@ app.post('/pdf-process', upload.single('file'), async (req, res) => {
   }
 });
 
+
+// Handles GET request to the API endpoint
+// Mainly just so error page goes away
+app.get('/create', (req, res) => {
+  res.send(' You are currently on the /create endpoint ');
+});
 
 
 // Ensure server is running and endpoint is working
