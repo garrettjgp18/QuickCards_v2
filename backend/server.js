@@ -43,7 +43,7 @@ app.post('/create', (req, res) => {
     Media Type: ${recievedData.mediaType}\n 
     Number of Cards = ${recievedData.numberOfCards}\n 
     Schema: ${recievedData.currentSchema}\n 
-    ${recievedData.result}\n\n`);
+    Extracted: ${recievedData.result}\n\n`); // Call OpenAI method and pass all variables in?
 
 
   // Send message back to React page (line 53 + 54 from CreatePage.jsx)
@@ -99,6 +99,7 @@ app.post('/pdf-process', upload.single('file'), async (req, res) => {
         console.log("Extracted Text Arrays:", textArrays); // Optionally log the arrays for verification
 
         // Send the arrays of extracted text back to the client side
+        // TODO: Call OpenAI method from OpenAI.js, pass in textArrays
         res.send({ extractedTextArrays: textArrays });
 
         // Optionally, delete the file after processing to clean up server storage

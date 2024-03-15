@@ -91,14 +91,14 @@ export default function Navbar(){
         }
         // Calls the function that determines the extraction method to call
         let promptResult = await mediaQueryHandler(fileType, uploadedFile);
-        console.log(promptResult);
+        const flattenedText = promptResult.extractedTextArrays.flat().join(' '); // Removes all formatting by "flattening" the arrays 
 
         // Create a JSON transfer structure
         const dataObject = {
             mediaType: `${currentId}`, // Holds current state of ID (use mediaType in server.js)
             numberOfCards: numberOfCards, // Holds current state of numberOfCards
             currentSchema: currentSchema, // Holds current state of schema 
-            result: promptResult // Holds extracted text
+            result: flattenedText // Holds flattened extracted text
         };
 
         try {
@@ -108,7 +108,7 @@ export default function Navbar(){
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(dataObject)
+                body: JSON.stringify(dataObject) // convery into easy readible string
             });
 
             // If this appears, make sure both NodeJS and ReactJS clients are running in SEPARATE terminals
