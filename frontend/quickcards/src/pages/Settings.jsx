@@ -40,22 +40,21 @@ function SettingsPage() {
     };
   
     return (
-      <div>
-        <div style={{ textAlign: 'center'}}>
-            <h1 style={{ fontSize: '2rem', marginBottom: '20px' }}>Account Settings</h1>
+      <div className="flex flex-row xsm:flex-col sm:flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row">
+        <div className="md:w-1/2 lg:w-1/2 xl:w-1/2 2xl:w-1/2 p-4 border border-gray-400 flex flex-col items-center justify-center" style={{ margin: '20px' }}>
+          <div style={{ textAlign: 'center', fontSize: '25px'}}>
+            <p style={{ margin: '10px' }}>Name: {name}</p><br></br>
+            <p style={{ margin: '10px' }}>Email: {email}</p><br></br>
+            <p style={{ margin: '10px' }}>API Key: {api}</p><br></br>
+          </div>
         </div>
-        <div style={{ textAlign: 'center', fontSize: '25px'}}>
-          <p>Name: {name}</p><br></br>
-          <p>Email: {email}</p><br></br>
-          <p>API Key: {api}</p><br></br>
-        </div>
-        <br></br><br></br>
-        <div style={{ fontSize: '2rem', textAlign: 'center'}}>
-          <button onClick={handleChangeEmail} style={{ backgroundColor: '#007bff', color: '#fff', padding: '10px 20px', borderRadius: '5px', marginRight: '10px', border: 'none' }}>Change Email</button>
-          <button onClick={handleChangePassword} style={{ backgroundColor: '#28a745', color: '#fff', padding: '10px 20px', borderRadius: '5px', marginRight: '10px', border: 'none' }}>Change Password</button>
-          <button onClick={handleChangeAPI} style={{ backgroundColor: 'violet', color: '#fff', padding: '10px 20px', borderRadius: '5px', marginRight: '10px', border: 'none' }}>Change API</button>
-          <button onClick={handleResetFlashcards} style={{ backgroundColor: '#ffc107', color: '#000', padding: '10px 20px', borderRadius: '5px', marginRight: '10px', border: 'none' }}>Reset Flashcards</button>
-          <button onClick={handleDeleteAccount} style={{ backgroundColor: '#dc3545', color: '#fff', padding: '10px 20px', borderRadius: '5px', marginRight: '10px', border: 'none' }}>Delete Account</button>
+        <div className="md:w-1/2 lg:w-1/2 xl:w-1/2 2xl:w-1/2 p-4 border border-gray-400 flex flex-col items-center justify-center" style={{ margin: '20px' }}>
+          <div className="flex flex-col items-center" style = {{ margin: '20px' }}>
+            <button onClick={handleChangeEmail} style={{ color: '#fff', padding: '10px 20px', borderRadius: '5px', margin: '10px', border: 'none' }} class="bg-teal-500">Change Email</button>
+            <button onClick={handleChangePassword} style={{ color: '#fff', padding: '10px 20px', borderRadius: '5px', margin: '10px', border: 'none' }} class="bg-teal-500">Change Password</button>
+            <button onClick={handleChangeAPI} style={{ color: '#fff', padding: '10px 20px', borderRadius: '5px', margin: '10px', border: 'none' }} class="bg-teal-500">Change API</button>
+            <button onClick={handleDeleteAccount} style={{ color: '#fff', padding: '10px 20px', borderRadius: '5px', margin: '10px', border: 'none' }} class="bg-teal-500">Delete Account</button>
+          </div>
         </div>
   
         {showDeleteConfirmation && (
