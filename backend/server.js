@@ -3,7 +3,8 @@
   This file contains the main logic of NodeJS, including the routes and POST / GET fetch request processing. 
 */
 
-
+// Handles the .env variables being used
+require('dotenv').config();
 const http = require('node:http');
 const express = require('express');
 const app = express();
@@ -12,10 +13,6 @@ const cors = require('cors');
 const multer = require('multer'); //Multer is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
 const fs = require('fs'); // Required for file system access
 const pdfParse = require('pdf-parse'); // Require pdf-parse for PDF processing
-
-
-
-
 
 
 // Define port
