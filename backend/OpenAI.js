@@ -5,12 +5,12 @@ const openai = new OpenAI();
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 // Testing variables, payload would be accepted somewhere around here
-let numCards = 10;
-let schema = "Fortnite"
-let transcript = ``;
+// let numCards = 10;
+// let schema = "Fortnite"
+// let transcript = ``;
 
 
-async function openAIGenerate() {
+async function openAIGenerate(numCards, schema, transcript) {
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: `You are a helpful assistant that creates flashcards. In the following text, find ${numCards} keywords that are
     associated with the concept of ${schema}. Define each keyword in 10 words or less. Return them as "keywords : definition". Do not return anything else.
@@ -21,4 +21,4 @@ async function openAIGenerate() {
   console.log(completion.choices[0]);
 }
 
-openAIGenerate();
+module.exports = {openAIGenerate};

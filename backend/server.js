@@ -13,6 +13,7 @@ const cors = require('cors');
 const multer = require('multer'); //Multer is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
 const fs = require('fs'); // Required for file system access
 const pdfParse = require('pdf-parse'); // Require pdf-parse for PDF processing
+const {openAIGenerate} = require('./OpenAI');
 
 
 // Define port
@@ -41,6 +42,8 @@ app.post('/create', (req, res) => {
     Number of Cards = ${recievedData.numberOfCards}\n 
     Schema: ${recievedData.currentSchema}\n 
     Extracted: ${recievedData.result}\n\n`); // Call OpenAI method and pass all variables in?
+
+    openAIGenerate(recievedData.numberOfCards, recievedData.currentSchema, recievedData.result);
 
 
   // Send message back to React page (line 53 + 54 from CreatePage.jsx)
