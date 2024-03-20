@@ -84,21 +84,20 @@ export default function Navbar(){
     // Once "Generate Cards" button is clicked, start this asynchronous process
     const submitData = async () => {
         
-        // Make sure file type is either PDF or audio
-        if (!uploadedFile || fileType === "Unsupported") {
-            console.log("No supported file to process. Please upload a PDF or Audio file.");
-            return;
-        }
+        // // Make sure file type is either PDF or audio
+        // if (!uploadedFile || fileType === "Unsupported") {
+        //     console.log("No supported file to process. Please upload a PDF or Audio file.");
+        //     return;
+        // }
         // Calls the function that determines the extraction method to call
-        let promptResult = await mediaQueryHandler(fileType, uploadedFile);
-        const flattenedText = promptResult.extractedTextArrays.flat().join(' '); // Removes all formatting by "flattening" the arrays 
+        let promptResult = await mediaQueryHandler(currentId, uploadedFile);
 
         // Create a JSON transfer structure
         const dataObject = {
             mediaType: `${currentId}`, // Holds current state of ID (use mediaType in server.js)
             numberOfCards: numberOfCards, // Holds current state of numberOfCards
             currentSchema: currentSchema, // Holds current state of schema 
-            result: flattenedText // Holds flattened extracted text
+            result: promptResult // Holds flattened extracted text
         };
 
         try {
@@ -142,7 +141,8 @@ export default function Navbar(){
             // For instance, it could be the text extracted from the PDF, organized in arrays
             const extractedData = response.data;
             // Return the processed data for further use
-            return extractedData;
+            return extractedData.extractedTextArrays.flat().join(' '); // Removes all formatting by "flattening" the arrays 
+            ;
         } catch (error) {
             // Log any errors that occur during the file upload or processing
             console.error('Error processing PDF:', error);
