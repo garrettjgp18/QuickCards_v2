@@ -41,8 +41,9 @@ app.post('/create', (req, res) => {
     Media Type: ${recievedData.mediaType}\n 
     Number of Cards = ${recievedData.numberOfCards}\n 
     Schema: ${recievedData.currentSchema}\n 
-    Extracted: ${recievedData.result}\n\n`); // Call OpenAI method and pass all variables in?
+    Extracted: ${recievedData.result}\n\n`);
 
+    // Call OpenAI method and pass all variables in
     openAIGenerate(recievedData.numberOfCards, recievedData.currentSchema, recievedData.result);
 
 
