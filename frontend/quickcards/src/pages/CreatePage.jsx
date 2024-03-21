@@ -8,6 +8,12 @@ export default function Navbar(){
     const [currentId, setCurrentId] = useState("Video");
     const [numberOfCards, setNumberOfCards] = useState(""); // State variable for number of cards - setNumberOfCards will update value once changed
     const [currentSchema, setCurrentSchema] = useState(""); // Same goes here
+    const [videoURL, setVideoURL] = useState("");
+
+    const handleVideoChange = (event) => {
+        setVideoURL(event.target.value); 
+        // console.log(event.target.value);
+    }
 
     // Function to update number of cards state
     const handleNumberOfCardsChange = (event) => {
@@ -152,6 +158,12 @@ export default function Navbar(){
     }
 
 
+    async function processVideo(){
+
+        // const response = await axios.post('https://127.0.0.1:3000/video-process');
+    }
+
+
     // Changes the method in JSON structure that will be called when "Generate Cards" button is pressed
     // Holds off until variable is ready to be initialized 
     const mediaQueryHandler = async (mediaType, file) => {
@@ -161,7 +173,7 @@ export default function Navbar(){
         switch(mediaType) {
             case 'Video':
                 // Placeholder values. Once extraction methods are created, change to promptResult = pdfExtract() and so on
-                promptResult = "VIDEO";
+                promptResult = await processVideo();
                 break;
             case 'PDF':
                 // PDF processing logic - calling processPDF function to handle PDFs
@@ -223,7 +235,7 @@ export default function Navbar(){
                     />
 
                     {/* Render Input Form if User selects Video  */}
-                    <input type="text" className= {`border rounded w-5/6 p-2 ${currentId === "Video" ? "block" : "hidden" }`} placeholder="Enter Youtube URL" />
+                    <input type="text" className= {`border rounded w-5/6 p-2 ${currentId === "Video" ? "block" : "hidden" }`} value={videoURL} onChange={handleVideoChange} placeholder="Enter Youtube URL" />
 
                 </div>
                 <div className="w-full h-[12vh] md:w-1/2 flex flex-row gap-4 items-center align-middle">

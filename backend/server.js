@@ -52,7 +52,10 @@ app.post('/create', (req, res) => {
 });
 
 
+// Endpoint for video processing - send paylaod here, configure to process accordingly.
+app.post('/video-process', (req, res) => {
 
+});
 
 
 // CREATE -------------------------------------------------------
