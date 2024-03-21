@@ -158,9 +158,10 @@ export default function Navbar(){
     }
 
 
-    async function processVideo(){
+    async function processVideo(videoURL){
 
-        // const response = await axios.post('https://127.0.0.1:3000/video-process');
+        const response = await axios.post('https://127.0.0.1:3000/video-process');
+
     }
 
 
@@ -173,7 +174,7 @@ export default function Navbar(){
         switch(mediaType) {
             case 'Video':
                 // Placeholder values. Once extraction methods are created, change to promptResult = pdfExtract() and so on
-                promptResult = await processVideo();
+                promptResult = await processVideo(videoURL);
                 break;
             case 'PDF':
                 // PDF processing logic - calling processPDF function to handle PDFs
