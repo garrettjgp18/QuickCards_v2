@@ -12,7 +12,7 @@ export default function Navbar(){
 
     const handleVideoChange = (event) => {
         setVideoURL(event.target.value); 
-        // console.log(event.target.value);
+        console.log(event.target.value);
     }
 
     // Function to update number of cards state
