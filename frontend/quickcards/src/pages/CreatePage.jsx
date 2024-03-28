@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios'; //Axios is a promise-based HTTP Client for node.js and the browser
+import {db, saveCards} from "/db.js";
 
 export default function Navbar(){
 
@@ -45,6 +46,7 @@ export default function Navbar(){
     
     // Function to handle file selection
     const handleFileUpload = async (event) => {
+        console.log("handleFileUpload started");
         // Retrieve the first selected file from the file input event
         const file = event.target.files[0];
         // Check if a file was actually selected
@@ -89,6 +91,7 @@ export default function Navbar(){
 
     // Once "Generate Cards" button is clicked, start this asynchronous process
     const submitData = async () => {
+        console.log('submitData started');
         
         // // Make sure file type is either PDF or audio
         // if (!uploadedFile || fileType === "Unsupported") {
@@ -97,6 +100,7 @@ export default function Navbar(){
         // }
         // Calls the function that determines the extraction method to call
         let promptResult = await mediaQueryHandler(currentId, uploadedFile);
+        console.log("transcript loaded into payload");
 
         // Create a JSON transfer structure
         const dataObject = {
@@ -116,6 +120,8 @@ export default function Navbar(){
                 body: JSON.stringify(dataObject) // convery into easy readible string
             });
 
+            console.log("fetch to OpenAI complete");
+
             // If this appears, make sure both NodeJS and ReactJS clients are running in SEPARATE terminals
             if (!response.ok) {
                 throw new Error("No network response");
@@ -123,8 +129,11 @@ export default function Navbar(){
 
             // Wait for response from NodeJS server, once received, print to developer console
             const responseData = await response.json();
+            console.log("waiting on OpenAI...");
             console.log("Response from server: " + responseData.message);
+            console.log("Extracted: \n", responseData.text);
         } catch(error) {
+
             console.log("Error sending data to server: " + error);
         }
 
@@ -133,6 +142,7 @@ export default function Navbar(){
 
     // Asynchronously processes a PDF file by sending it to a server endpoint for processing
     async function processPDF(pdfFile) {
+        console.log("processPDF started");
         // Create a FormData object to hold the file data for the POST request
         const formData = new FormData();
         // Append the selected PDF file under the key 'file', which the server expects
@@ -168,6 +178,7 @@ export default function Navbar(){
     // Changes the method in JSON structure that will be called when "Generate Cards" button is pressed
     // Holds off until variable is ready to be initialized 
     const mediaQueryHandler = async (mediaType, file) => {
+        console.log("mediaQueryHandler started");
 
         let promptResult = "";
 

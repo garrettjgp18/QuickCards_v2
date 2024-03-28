@@ -33,7 +33,7 @@ app.use(cors());
 
 
 // Handles POST request to the /api endpoint
-app.post('/create', (req, res) => {
+app.post('/create', async (req, res) => {
   const recievedData = req.body;
   // Format data and display in terminal running NodeJS to ensure data is correct
   console.log(
@@ -44,11 +44,13 @@ app.post('/create', (req, res) => {
     Extracted: ${recievedData.result}\n\n`);
 
     // Call OpenAI method and pass all variables in
-    openAIGenerate(recievedData.numberOfCards, recievedData.currentSchema, recievedData.result);
+    const generated = await openAIGenerate(recievedData.numberOfCards, recievedData.currentSchema, recievedData.result);
 
 
   // Send message back to React page (line 53 + 54 from CreatePage.jsx)
-  res.json({message: "This is a message from NodeJS server -> Test complete"});
+  res.json({message: "This is a message from NodeJS server -> Test complete",
+            text: `${generated}`
+  });
 });
 
 

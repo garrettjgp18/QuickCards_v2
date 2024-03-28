@@ -1,5 +1,6 @@
 const OpenAI = require("openai");
 const openai = new OpenAI();
+// const db = require('./db')
 
 // Create an .env file in the root directory of the project, and add OPENAI_API_KEY = 'put your key here'. It should pass it into the prompt automatically
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
@@ -22,6 +23,10 @@ async function openAIGenerate(numCards, schema, transcript) {
 
   // Send info back to React using "My Cards" endpoint?
   console.log(completion.choices[0]);
+  // await db.saveCards(completion.choices[0].message.content);
+  return completion.choices[0].message.content;
 }
+
+
 
 module.exports = {openAIGenerate};
