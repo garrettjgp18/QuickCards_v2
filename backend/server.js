@@ -12,6 +12,9 @@ const cors = require('cors');
 const multer = require('multer'); //Multer is a node.js middleware for handling multipart/form-data, which is primarily used for uploading files.
 const fs = require('fs'); // Required for file system access
 const pdfParse = require('pdf-parse'); // Require pdf-parse for PDF processing
+const axios = require('axios');
+const FormData = require('form-data');
+
 
 
 
@@ -116,6 +119,38 @@ app.post('/pdf-process', upload.single('file'), async (req, res) => {
   }
 });
 
+// New POST route for audio file processing
+app.post('/audio-process', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send({ message: 'Please upload an audio file.' });
+  }
+
+  try {
+    const fileData = fs.createReadStream(req.file.path);
+    const formData = new FormData();
+    formData.append('file', fileData);
+
+    const response = await axios.post('https://api.openai.com/v1/audio/transcriptions', formData, {
+      headers: {
+        'Authorization': `Bearer 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`,
+        ...formData.getHeaders(),
+      },
+    });
+
+    // Cleanup: Delete the uploaded file after processing
+    fs.unlinkSync(req.file.path);
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error processing audio:', error);
+    res.status(500).send({ message: 'Error in audio processing' });
+
+    // Attempt to clean up even in case of failure
+    if (req.file?.path) {
+      fs.unlinkSync(req.file.path);
+    }
+  }
+});
 
 // Handles GET request to the API endpoint
 // Mainly just so error page goes away
