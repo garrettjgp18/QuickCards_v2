@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios'; //Axios is a promise-based HTTP Client for node.js and the browser
-import {db, saveCards} from "/db.js";
+import { db, saveCards, getCards } from "/db.js";
 
-export default function Navbar(){
+export default function Navbar() {
 
-  
+
     // Define state variables (hooks)
     const [currentId, setCurrentId] = useState("Video");
     const [numberOfCards, setNumberOfCards] = useState(""); // State variable for number of cards - setNumberOfCards will update value once changed
@@ -12,7 +12,7 @@ export default function Navbar(){
     const [videoURL, setVideoURL] = useState("");
 
     const handleVideoChange = (event) => {
-        setVideoURL(event.target.value); 
+        setVideoURL(event.target.value);
         console.log(event.target.value);
     }
 
@@ -41,9 +41,9 @@ export default function Navbar(){
 
     // Add a state to hold the uploaded file
     const [uploadedFile, setUploadedFile] = useState(null);
-    
+
     const [fileType, setFileType] = useState(""); // Add this to store the file type
-    
+
     // Function to handle file selection
     const handleFileUpload = async (event) => {
         console.log("handleFileUpload started");
@@ -56,29 +56,29 @@ export default function Navbar(){
         }
         // Log the name of the uploaded file for verification
         console.log("Uploaded file:", file.name);
-    
+
         // Determine the file type (e.g., PDF, Audio) to handle accordingly
         //This checks if the MIME type of the uploaded file is "application/pdf", indicating it's a PDF file.
         //If this condition is true, fileType is assigned the value "PDF".
         //If it's false, the code after the colon (:) is evaluated next.
-        const determinedFileType = file.type === "application/pdf" ? "PDF" : 
-        
-        //This part is reached if the first condition is false, meaning the file is not a PDF.
-        //It checks if the MIME type of the file starts with "audio/", a common prefix for audio files (e.g., "audio/mp3", "audio/wav").
-        //If this condition is true, fileType is assigned the value "Audio".
-        //If it's false, the value after the second colon (:) is used.
-        file.type.startsWith("audio/") ? "Audio" : 
-        
-        //This value is assigned if both previous conditions are false, meaning the file is neither a PDF nor an audio file as defined by your conditions.
-        "Unsupported";
-        
+        const determinedFileType = file.type === "application/pdf" ? "PDF" :
+
+            //This part is reached if the first condition is false, meaning the file is not a PDF.
+            //It checks if the MIME type of the file starts with "audio/", a common prefix for audio files (e.g., "audio/mp3", "audio/wav").
+            //If this condition is true, fileType is assigned the value "Audio".
+            //If it's false, the value after the second colon (:) is used.
+            file.type.startsWith("audio/") ? "Audio" :
+
+                //This value is assigned if both previous conditions are false, meaning the file is neither a PDF nor an audio file as defined by your conditions.
+                "Unsupported";
+
         // ######## Old implementation, removed besuase mediQueryHandler was called twice, worried about unnessecary overhead #########
         // Call mediaQueryHandler to process the file based on its type, passing both type and file
         //const extractedData = await mediaQueryHandler(fileType, file);
 
         setUploadedFile(file); // Store the uploaded file in state
         setFileType(determinedFileType); // Also store the determined file type
-        
+
         // Log the result of the file handling, which could be processed data or an error message
         //console.log("Handled File Data:", extractedData);
     };
@@ -92,7 +92,7 @@ export default function Navbar(){
     // Once "Generate Cards" button is clicked, start this asynchronous process
     const submitData = async () => {
         console.log('submitData started');
-        
+
         // // Make sure file type is either PDF or audio
         // if (!uploadedFile || fileType === "Unsupported") {
         //     console.log("No supported file to process. Please upload a PDF or Audio file.");
@@ -130,9 +130,27 @@ export default function Navbar(){
             // Wait for response from NodeJS server, once received, print to developer console
             const responseData = await response.json();
             console.log("waiting on OpenAI...");
-            console.log("Response from server: " + responseData.message);
             console.log("Extracted: \n", responseData.text);
-        } catch(error) {
+
+            // -- OpenAI adjustment stuff
+            // split OpenAI output by end-of-line markers. Filter out empty strings
+            const pairs = responseData.text.split('\n').filter(Boolean);
+
+            // Traverse all pairs - split each pair by ":", map keyword and definiton with no whitespace
+            for (const pair of pairs) {
+                const [keyword, definition] = pair.split(':').map(item => item.trim());
+                // Enable if you need to test anything
+                // console.log("keyword: ", keyword);
+                // console.log("definition: ", definition);
+
+                // save parsed information to database
+                saveCards(keyword, definition);
+            }
+
+
+
+
+        } catch (error) {
 
             console.log("Error sending data to server: " + error);
         }
@@ -168,7 +186,7 @@ export default function Navbar(){
     }
 
 
-    async function processVideo(videoURL){
+    async function processVideo(videoURL) {
 
         const response = await axios.post('https://127.0.0.1:3000/video-process');
 
@@ -182,7 +200,7 @@ export default function Navbar(){
 
         let promptResult = "";
 
-        switch(mediaType) {
+        switch (mediaType) {
             case 'Video':
                 // Placeholder values. Once extraction methods are created, change to promptResult = pdfExtract() and so on
                 promptResult = await processVideo(videoURL);
@@ -204,70 +222,70 @@ export default function Navbar(){
 
     return (
         <>
-        <div className="min-h-[70vh] h-auto w-3/4 border m-auto mt-12 rounded-xl p-4 shadow-lg">
-            <div className="w-4/5 h-16 flex items-center justify-center ml-auto mr-auto">
-                <ul className="w-auto mt-4 flex flex-row gap-12 md:gap-16 lg:gap-24 xl:gap-28 2xl:gap-36 justify-center align-middle text-2xl md:text-xl text-gray-600">
-                    <li onClick={() => selectMode("Video")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "Video" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
-                        <span className="hidden md:block">Video</span>
-                        <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-camera-video"></i></span>
-                    </li>
-                    <li onClick={() => selectMode("PDF")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "PDF" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
-                        <span className="hidden md:block">PDF</span>
-                        <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-file-pdf"></i></span>
-                    </li>
-                    <li onClick={() => selectMode("Text")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "Text" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
-                        <span className="hidden md:block">Text</span>
-                        <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-text-paragraph"></i></span>
-                    </li>
-                    <li onClick={() => selectMode("Audio")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "Audio" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
-                        <span className="hidden md:block">Audio</span>
-                        <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-headphones"></i></span>
-                    </li>
-                </ul>
-            </div>
+            <div className="min-h-[70vh] h-auto w-3/4 border m-auto mt-12 rounded-xl p-4 shadow-lg">
+                <div className="w-4/5 h-16 flex items-center justify-center ml-auto mr-auto">
+                    <ul className="w-auto mt-4 flex flex-row gap-12 md:gap-16 lg:gap-24 xl:gap-28 2xl:gap-36 justify-center align-middle text-2xl md:text-xl text-gray-600">
+                        <li onClick={() => selectMode("Video")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "Video" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
+                            <span className="hidden md:block">Video</span>
+                            <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-camera-video"></i></span>
+                        </li>
+                        <li onClick={() => selectMode("PDF")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "PDF" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
+                            <span className="hidden md:block">PDF</span>
+                            <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-file-pdf"></i></span>
+                        </li>
+                        <li onClick={() => selectMode("Text")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "Text" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
+                            <span className="hidden md:block">Text</span>
+                            <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-text-paragraph"></i></span>
+                        </li>
+                        <li onClick={() => selectMode("Audio")} className={`cursor-pointer flex flex-row gap-2 ${currentId === "Audio" ? 'text-teal-500' : 'hover:text-teal-500 active:scale-95'}`}>
+                            <span className="hidden md:block">Audio</span>
+                            <span className="text-3xl md:text-2xl relative bottom-0.5"><i className="bi-headphones"></i></span>
+                        </li>
+                    </ul>
+                </div>
 
-            <hr className="bg-gray-200 h-0.5 w-full md:w-[90%] mr-auto ml-auto mt-1" />
-              {/*Container below the tabs */}
-            <div className="flex flex-col md:flex-row gap-0 w-4/5 mr-auto ml-auto mt-8">
-                <div className="w-full md:w-1/2 h-[12vh] flex items-center align-middle">
-                     {/*Upload Content Button */}
-                    {/*If "Text" or "Video" tab is selected - button does not render */}
-                    <button onClick={openFileDialog} className={`bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95 ${currentId === "Text" || currentId === "Video" ? "hidden" : "" }`}>Upload {currentId}</button>
+                <hr className="bg-gray-200 h-0.5 w-full md:w-[90%] mr-auto ml-auto mt-1" />
+                {/*Container below the tabs */}
+                <div className="flex flex-col md:flex-row gap-0 w-4/5 mr-auto ml-auto mt-8">
+                    <div className="w-full md:w-1/2 h-[12vh] flex items-center align-middle">
+                        {/*Upload Content Button */}
+                        {/*If "Text" or "Video" tab is selected - button does not render */}
+                        <button onClick={openFileDialog} className={`bg-teal-500 rounded-md p-4 text-white hover:bg-teal-600 active:scale-95 ${currentId === "Text" || currentId === "Video" ? "hidden" : ""}`}>Upload {currentId}</button>
 
-                    {/* File input element */}
-                    {/* Basically, useRef is creating a "refrence" to the "upload" button, allowing it to be used throughout the code. When the upload button is clicked, it
+                        {/* File input element */}
+                        {/* Basically, useRef is creating a "refrence" to the "upload" button, allowing it to be used throughout the code. When the upload button is clicked, it
                         launches the uploadFileDialog method, which refrences the input field below for the data. Setting the display to "none" removes it from the visual.
                     */}
-                    <input
-                        ref={fileInputRef}
-                        type="file"
-                        style={{ display: 'none' }}
-                        onChange={handleFileUpload}
-                        accept={acceptedFileTypes[currentId]}
-                    />
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            style={{ display: 'none' }}
+                            onChange={handleFileUpload}
+                            accept={acceptedFileTypes[currentId]}
+                        />
 
-                    {/* Render Input Form if User selects Video  */}
-                    <input type="text" className= {`border rounded w-5/6 p-2 ${currentId === "Video" ? "block" : "hidden" }`} value={videoURL} onChange={handleVideoChange} placeholder="Enter Youtube URL" />
+                        {/* Render Input Form if User selects Video  */}
+                        <input type="text" className={`border rounded w-5/6 p-2 ${currentId === "Video" ? "block" : "hidden"}`} value={videoURL} onChange={handleVideoChange} placeholder="Enter Youtube URL" />
 
+                    </div>
+                    <div className="w-full h-[12vh] md:w-1/2 flex flex-row gap-4 items-center align-middle">
+                        <h1 className="text-gray-600 text-lg font-medium">Number of Cards:</h1>
+                        {/* // Assigning value ensures the state is always in sync and controlled. Once value is changed, update numberOfCards value in state variable*/}
+                        <input type="text" className="border rounded w-1/5 p-2" value={numberOfCards} onChange={handleNumberOfCardsChange} placeholder="15" />
+                    </div>
                 </div>
-                <div className="w-full h-[12vh] md:w-1/2 flex flex-row gap-4 items-center align-middle">
-                    <h1 className="text-gray-600 text-lg font-medium">Number of Cards:</h1>
-                    {/* // Assigning value ensures the state is always in sync and controlled. Once value is changed, update numberOfCards value in state variable*/}
-                    <input type="text" className="border rounded w-1/5 p-2" value={numberOfCards} onChange={handleNumberOfCardsChange} placeholder="15" />
+
+                <div className="w-4/5 ml-auto mr-auto mt-8">
+                    <h1 className="text-gray-600 text-lg font-medium">Describe what you want:</h1>
+
+                    {/*Text Box to enter schema */}
+                    <textarea type="text" className="border rounded w-full h-48 p-2 mt-4" value={currentSchema} onChange={changeCurrentSchema} placeholder="e.g Spanish words with their English translations based on the video">
+                    </textarea>
+
+                    {/*Submit Button */}
+                    <button onClick={submitData} className="bg-teal-500 rounded-md p-4 w-full mt-4 text-white hover:bg-teal-600 active:scale-95">Generate Cards</button>
                 </div>
             </div>
-
-            <div className="w-4/5 ml-auto mr-auto mt-8">
-                <h1 className = "text-gray-600 text-lg font-medium">Describe what you want:</h1>
-
-                {/*Text Box to enter schema */}
-                <textarea type="text" className="border rounded w-full h-48 p-2 mt-4" value={currentSchema} onChange={changeCurrentSchema} placeholder="e.g Spanish words with their English translations based on the video">
-                </textarea>
-
-                {/*Submit Button */}
-                <button onClick={submitData} className="bg-teal-500 rounded-md p-4 w-full mt-4 text-white hover:bg-teal-600 active:scale-95">Generate Cards</button>
-            </div>
-        </div>
         </>
     );
 }
