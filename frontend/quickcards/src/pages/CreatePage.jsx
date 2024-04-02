@@ -157,20 +157,24 @@ export default function Navbar(){
         formData.append('file', audioFile);
     
         try {
-            // Update to use your server's endpoint
             const response = await axios.post('http://127.0.0.1:3000/audio-process', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
     
+            // Assuming the response directly contains the transcription text, we might need to adjust this based on actual structure
             console.log("Audio Transcription Response:", response.data);
-            return response.data;
+    
+            // Wrap the text in an object with extractedTextArrays for consistency
+            return { extractedTextArrays: [response.data.transcription] }; // Adjust response.data.transcription as needed
         } catch (error) {
             console.error('Error processing audio:', error);
-            return "Error in audio processing";
+            return { extractedTextArrays: ["Error in audio processing"] }; // Provide a default structure even in error cases
         }
     }
+    
+
 
     // Changes the method in JSON structure that will be called when "Generate Cards" button is pressed
     // Holds off until variable is ready to be initialized 
