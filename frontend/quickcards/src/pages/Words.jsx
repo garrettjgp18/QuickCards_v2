@@ -4,11 +4,11 @@ import {db, saveCards, getCards} from "/db.js";
 
 
 
-const query = await db.card.each(card => {
-  let keyword = card.keyword;
-  let definition = card.definition;
-  console.log ("Keyword: " + keyword + " Definition: " + definition);
-});
+// const query = await db.card.each(card => {
+//   let keyword = card.keyword;
+//   let definition = card.definition;
+//   console.log ("Keyword: " + keyword + " Definition: " + definition);
+// });
 
 
 //data to loop through

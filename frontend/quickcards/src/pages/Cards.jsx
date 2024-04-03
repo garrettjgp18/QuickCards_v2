@@ -1,33 +1,49 @@
 import React, { useState } from 'react';
 
 
-//dictionary loaded in from dexie
-//data to loop through
-const dictionary = {
-    "Hola": "Hello",
-    "aquí": "here",
-    "como estas": "how are you",
-    "No": "no",
-    "Si": "yes"
-};
-  
-
-//current card value
-
-
-
-const nextCard = () =>{
-    console.log("next card");
-}
-
-const prevCard = () =>{
-    console.log("previous card");
-}
-
-//current card value
-
-
 export default function Words(){
+
+    //dictionary loaded in from dexie
+    //data to loop through
+    const dictionary = {
+        "Hola": "Hello",
+        "aquí": "here",
+        "como estas": "how are you",
+        "No": "no",
+        "Si": "yes"
+    };
+    
+
+    //convert dictionary to an array to grab index
+    const keyByIndex = Object.keys(dictionary);
+
+    //create currentIndex reactive variable to change current increment or decrement current index
+    const [currentIndex, changeIndex] = useState(0);
+    console.log(currentIndex);
+
+    //current card value - get value from dictionary
+    const [currentCard, changeCard] = useState(keyByIndex[currentIndex]);
+
+    console.log(currentCard);
+
+    //go to next card
+    const nextCard = () =>{
+        changeIndex(currentIndex + 1);
+        changeCard(keyByIndex[currentIndex]);
+    }
+
+    //go to previous card
+    const prevCard = () =>{
+        if (currentIndex == 0){
+            changeIndex(currentIndex);
+        } else {
+            changeIndex(currentIndex - 1);
+        }
+    }
+
+
+
+
     return (
         <>
 
@@ -37,7 +53,7 @@ export default function Words(){
             {/*Flashcard */}
             <div className = "w-3/4 h-[50vh] border m-auto mt-4 rounded-xl shadow-lg overflow-auto hover:bg-gray-50 hover:cursor-pointer active:scale-95 flex items-center justify-center">
                 {/*Flashcard Content*/}
-                <h1 className = "text-3xl text-gray-500">Word 1</h1>
+                <h1 className = "text-3xl text-gray-500">{ currentCard }</h1>
             </div>
 
             {/*Buttons - Container*/}
