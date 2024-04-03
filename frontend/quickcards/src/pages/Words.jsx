@@ -2,23 +2,17 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
 import {db, saveCards, getCards} from "/db.js";
 
-
+//data to loop through
+const dictionary = {};
 
 const query = await db.card.each(card => {
   let keyword = card.keyword;
   let definition = card.definition;
-  console.log ("Keyword: " + keyword + " Definition: " + definition);
+  dictionary[keyword] = definition;
+  // console.log ("Keyword: " + keyword + " Definition: " + definition);
 });
 
 
-//data to loop through
-const dictionary = {
-  "Hola": "Hello",
-  "aquí": "here",
-  "como estas": "how are you",
-  "No": "no",
-  "Si": "yes"
-};
 
 //functions for button clicks
 
@@ -29,6 +23,7 @@ const download = () =>{
 
 const deleteWords = () =>{
   console.log("Deleting all the words");
+  window.location.reload();
 }
 
 //edit word button

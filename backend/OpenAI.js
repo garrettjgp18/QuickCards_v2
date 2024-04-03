@@ -16,7 +16,7 @@ async function openAIGenerate(numCards, schema, transcript) {
   const completion = await openai.chat.completions.create({
     messages: [{ role: "system", content: `You are a helpful assistant that creates flashcards. In the following text, find ${numCards} keywords that are
     associated with the concept of ${schema}. If the concept does not match the text, do not use it. Define each keyword in 10 words or less. 
-    Return them as "keywords : definition". Do not return anything else.
+    Return them as "keywords : definition". Seperate each with "\n" Do not return anything else.
     The text is as follows: ${transcript}` }],
     model: "gpt-3.5-turbo",
   });

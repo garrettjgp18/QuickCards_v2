@@ -20,6 +20,10 @@ export async function saveCards(front, back) {
             keyword: `${front}`,
             definition: `${back}`,
         });
+
+        // Refreshed the page, forces Dexie to populate table in MyWords
+        window.location.reload();
+
         return (newItem);
     } catch (error) {
         console.log("Error occured while saving data:  ", error);
