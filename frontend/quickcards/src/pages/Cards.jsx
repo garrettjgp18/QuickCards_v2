@@ -1,6 +1,32 @@
 import React, { useState } from 'react';
 
 
+//dictionary loaded in from dexie
+//data to loop through
+const dictionary = {
+    "Hola": "Hello",
+    "aquí": "here",
+    "como estas": "how are you",
+    "No": "no",
+    "Si": "yes"
+};
+  
+
+//current card value
+
+
+
+const nextCard = () =>{
+    console.log("next card");
+}
+
+const prevCard = () =>{
+    console.log("previous card");
+}
+
+//current card value
+
+
 export default function Words(){
     return (
         <>
@@ -16,8 +42,8 @@ export default function Words(){
 
             {/*Buttons - Container*/}
             <div className="flex flex-row gap-10 mt-16 justify-center">
-                {/*Left Button*/}   
-                <div className='w-20 h-20 border-2 rounded-xl flex flex-col justify-center items-center hover:cursor-pointer hover:bg-gray-100 active:scale-95'>
+                {/*Previous Card - Left Button*/}   
+                <div onClick = {prevCard} className='w-20 h-20 border-2 rounded-xl flex flex-col justify-center items-center hover:cursor-pointer hover:bg-gray-100 active:scale-95'>
                     <span className="text-2xl text-gray-500 hover:text-gray-600"><i className="bi-caret-left-fill"></i></span>
                 </div>
 
@@ -26,8 +52,8 @@ export default function Words(){
                     <h1 className = "text-gray-600 text-2xl">15/30</h1>
                 </div>
 
-                {/*Right Button*/}
-                <div className='w-20 h-20 border-2 rounded-xl flex flex-col justify-center items-center hover:cursor-pointer hover:bg-gray-100 active:scale-95'>
+                {/*Next Card - Right Button*/}
+                <div onClick = {nextCard} className='w-20 h-20 border-2 rounded-xl flex flex-col justify-center items-center hover:cursor-pointer hover:bg-gray-100 active:scale-95'>
                     <span className="text-2xl text-gray-500 hover:text-gray-600"><i className="bi-caret-right-fill"></i></span>
                 </div>
 
