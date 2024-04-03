@@ -55,7 +55,7 @@ export default function Words(){
                   <th className="bg-gray-50 text-sm font-medium text-gray-500 flex sm:justify-end">
                   
                     {/* Study button -> Redirects to Flashcards*/}
-                    <button className="bg-teal-500 rounded-md p-2 m-4 text-white hover:teal-600 active:scale-95 flex flex-row gap-2">
+                    <button className="bg-teal-500 rounded-md p-4 m-4 text-white hover:teal-600 active:scale-95 flex flex-row gap-2">
                       {/* Link to go to flashcards */}
                        <Link to="/cards">
                           <span className="text-2xl"><i className="bi-card-text"></i></span>
@@ -63,12 +63,12 @@ export default function Words(){
                       </button>
 
                     {/* Download CSV -> Downloads all words as CSV file - DOES NOT REDIRECT*/}
-                      <button onClick = {download} className="bg-sky-800 rounded-md p-2 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2">
+                      <button onClick = {download} className="bg-sky-800 rounded-md p-4 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2">
                           <span className="text-2xl"><i className="bi-download"></i></span>
                       </button>
 
                     {/* Clear all words from dexie -> Refresh page*/}
-                      <button onClick = {deleteWords} className="bg-red-400 rounded-md p-2 m-4 text-white hover:bg-red-500 active:scale-95 flex flex-row gap-2">
+                      <button onClick = {deleteWords} className="bg-red-400 rounded-md p-4 m-4 text-white hover:bg-red-500 active:scale-95 flex flex-row gap-2">
                           <span className="text-2xl"><i className="bi-trash"></i></span>
                       </button>
 
