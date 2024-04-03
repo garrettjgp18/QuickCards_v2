@@ -39,9 +39,9 @@ export default function Landing(){
                             </button>
 
                             {/* Sign in Text to the right of button */}
-                            <Link to="/login" className='text-white text-xl mt-4 hover:text-teal-500 cursor-pointer active:scale-95'>
+                           {/*  <Link to="/login" className='text-white text-xl mt-4 hover:text-teal-500 cursor-pointer active:scale-95'>
                             Log In
-                            </Link>
+                            </Link>*/}
 
                         </div>
                     </div>

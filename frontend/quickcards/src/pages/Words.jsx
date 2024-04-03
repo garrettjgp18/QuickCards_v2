@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 
 
 //data to loop through
@@ -10,7 +11,28 @@ const dictionary = {
   "Si": "yes"
 };
 
+//functions for button clicks
 
+//Download CSV
+const download = () =>{
+  console.log("Downloading CSV");
+}
+
+const deleteWords = () =>{
+  console.log("Deleting all the words");
+}
+
+//edit word button
+const editWord = (id) =>{
+
+  //convert the dictionary object to an array to access it by ID
+  const keyByIndex = Object.keys(dictionary)[id];
+  //print the key
+  console.log("Key: " + keyByIndex); 
+  //print the value
+  console.log("Value:" + dictionary[keyByIndex])
+
+}
   
   
 export default function Words(){
@@ -29,12 +51,30 @@ export default function Words(){
                     Back
                   </th>
 
-                  {/* Download CSV button */}
-                  <th className="bg-gray-50 text-sm leading-4 font-medium text-gray-500 uppercase tracking-wider flex justify-end">
-                    <button className="bg-teal-500 rounded-md p-3 text-white hover:bg-teal-600 active:scale-95 flex flex-row gap-2 m-3">
-                        <span className="hidden md:block mt-2">Download CSV</span>
-                        <span className="text-2xl md:text-xl"><i className="bi-download"></i></span>
-                    </button>
+                  {/* Cell for buttons */}
+                  <th className="bg-gray-50 text-sm font-medium text-gray-500 flex sm:justify-end">
+                  
+                    {/* Study button -> Redirects to Flashcards*/}
+                    <button className="bg-teal-500 rounded-md p-2 m-4 text-white hover:teal-600 active:scale-95 flex flex-row gap-2">
+                      {/* Link to go to flashcards */}
+                       <Link to="/cards">
+                          <span className="hidden md:block mt-2">Study</span>
+                          <span className="text-2xl md:text-xl"><i className="bi-card-text"></i></span>
+                        </Link>
+                      </button>
+
+                    {/* Download CSV -> Downloads all words as CSV file - DOES NOT REDIRECT*/}
+                      <button onClick = {download} className="bg-sky-800 rounded-md p-2 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2">
+                          <span className="hidden md:block mt-2">Download CSV</span>
+                          <span className="text-2xl md:text-xl"><i className="bi-download"></i></span>
+                      </button>
+
+                    {/* Clear all words from dexie -> Refresh page*/}
+                      <button onClick = {deleteWords} className="bg-red-400 rounded-md p-2 m-4 text-white hover:bg-red-500 active:scale-95 flex flex-row gap-2">
+                          <span className="hidden md:block mt-2">Delete All</span>
+                          <span className="text-2xl md:text-xl"><i className="bi-trash"></i></span>
+                      </button>
+
                   </th>
 
                 </tr>
@@ -49,6 +89,13 @@ export default function Words(){
                     </td>
                     <td className="px-6 py-4 whitespace-no-wrap">
                       {definition}
+                    </td>
+                                   
+                     {/* Edit Button on far right of table - onclick gets ID and toggles modal */}
+                    <td className="px-6 py-4 whitespace-no-wrap float-right mr-4">
+                      <span onClick={() => editWord(index)} className="text-2xl text-gray-400 hover:text-gray-500 hover:cursor-pointer">
+                        <i className="bi-pencil-fill"></i>
+                      </span>
                     </td>
                   </tr>
                 ))}
