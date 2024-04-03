@@ -206,9 +206,9 @@ export default function Navbar() {
     
             // Assuming the response directly contains the transcription text, we might need to adjust this based on actual structure
             console.log("Audio Transcription Response:", response.data);
-    
+            const extractedAudio = response.data;
             // Wrap the text in an object with extractedTextArrays for consistency
-            return { extractedTextArrays: [response.data.transcription] }; // Adjust response.data.transcription as needed
+            return extractedAudio.text; // Adjust response.data.transcription as needed
         } catch (error) {
             console.error('Error processing audio:', error);
             return { extractedTextArrays: ["Error in audio processing"] }; // Provide a default structure even in error cases
