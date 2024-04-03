@@ -58,21 +58,18 @@ export default function Words(){
                     <button className="bg-teal-500 rounded-md p-2 m-4 text-white hover:teal-600 active:scale-95 flex flex-row gap-2">
                       {/* Link to go to flashcards */}
                        <Link to="/cards">
-                          <span className="hidden md:block mt-2">Study</span>
-                          <span className="text-2xl md:text-xl"><i className="bi-card-text"></i></span>
+                          <span className="text-2xl"><i className="bi-card-text"></i></span>
                         </Link>
                       </button>
 
                     {/* Download CSV -> Downloads all words as CSV file - DOES NOT REDIRECT*/}
                       <button onClick = {download} className="bg-sky-800 rounded-md p-2 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2">
-                          <span className="hidden md:block mt-2">Download CSV</span>
-                          <span className="text-2xl md:text-xl"><i className="bi-download"></i></span>
+                          <span className="text-2xl"><i className="bi-download"></i></span>
                       </button>
 
                     {/* Clear all words from dexie -> Refresh page*/}
                       <button onClick = {deleteWords} className="bg-red-400 rounded-md p-2 m-4 text-white hover:bg-red-500 active:scale-95 flex flex-row gap-2">
-                          <span className="hidden md:block mt-2">Delete All</span>
-                          <span className="text-2xl md:text-xl"><i className="bi-trash"></i></span>
+                          <span className="text-2xl"><i className="bi-trash"></i></span>
                       </button>
 
                   </th>

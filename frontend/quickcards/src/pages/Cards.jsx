@@ -11,7 +11,7 @@ export default function Words(){
             {/*Flashcard */}
             <div className = "w-3/4 h-[50vh] border m-auto mt-4 rounded-xl shadow-lg overflow-auto hover:bg-gray-50 hover:cursor-pointer active:scale-95 flex items-center justify-center">
                 {/*Flashcard Content*/}
-                <h className = "text-3xl text-gray-500">Word 1</h>
+                <h1 className = "text-3xl text-gray-500">Word 1</h1>
             </div>
 
             {/*Buttons - Container*/}
@@ -23,7 +23,7 @@ export default function Words(){
 
                 {/*Display Card Number*/}
                 <div className="flex items-center">
-                    <h className = "text-gray-600 text-2xl">15/30</h>
+                    <h1 className = "text-gray-600 text-2xl">15/30</h1>
                 </div>
 
                 {/*Right Button*/}
