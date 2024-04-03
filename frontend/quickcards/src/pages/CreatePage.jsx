@@ -86,7 +86,7 @@ export default function Navbar() {
     // Set file types the system will accept based on the selected media type
     const acceptedFileTypes = {
         PDF: ".pdf",
-        Audio: ".mp3"
+        Audio: ".mp3, .mp4, .wav, .m4a"
     };
 
     // Once "Generate Cards" button is clicked, start this asynchronous process
