@@ -15,6 +15,7 @@ const fs = require('fs'); // Required for file system access
 const pdfParse = require('pdf-parse'); // Require pdf-parse for PDF processing
 const {openAIGenerate} = require('./OpenAI');
 const axios = require ('axios');
+const FormData = require('form-data');
 
 
 // Define port
@@ -134,17 +135,15 @@ app.post('/audio-process', upload.single('file'), async (req, res) => {
     return res.status(400).send({ message: 'Please upload an audio file.' });
   }
 
+  const formData = new FormData();
+  formData.append('file', fs.createReadStream(req.file.path), {
+    filename: req.file.originalname,
+    contentType: req.file.mimetype,
+  });
+  
+  formData.append('model', 'whisper-1');
+  
   try {
-    const fileData = fs.createReadStream(req.file.path);
-    const formData = new FormData();
-    // Include the original file name and MIME type explicitly
-    formData.append('file', fileData, {
-      filename: req.file.originalname,
-      contentType: req.file.mimetype
-    });
-    // Specify the model parameter here
-    formData.append('model', 'whisper-1'); // Adjust the model as needed
-
     const response = await axios.post('https://api.openai.com/v1/audio/transcriptions', formData, {
       headers: {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -152,17 +151,13 @@ app.post('/audio-process', upload.single('file'), async (req, res) => {
       },
     });
 
-    // Cleanup: Delete the uploaded file after processing
-    fs.unlinkSync(req.file.path);
-
+    fs.unlinkSync(req.file.path); // Cleanup
     res.json(response.data);
   } catch (error) {
-    console.error('Error processing audio:', error.response?.data || error);
-    res.status(500).send({ message: 'Error in audio processing', details: error.response?.data });
-
-    // Cleanup in case of failure
+    console.error('Error processing audio:', error.message);
+    res.status(500).send('Error in audio processing');
     if (req.file?.path) {
-      fs.unlinkSync(req.file.path);
+      fs.unlinkSync(req.file.path); // Cleanup even in case of failure
     }
   }
 });
