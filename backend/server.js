@@ -123,6 +123,50 @@ app.post('/pdf-process', upload.single('file'), async (req, res) => {
 });
 
 
+// New POST route for audio file processing
+//Important file size requirments via whisper docs: https://platform.openai.com/docs/guides/speech-to-text/quickstart?lang=node
+//By default, the Whisper API only supports files that are less than 25 MB. 
+//If you have an audio file that is longer than that, you will need to break it up into chunks of 25 MB's or less or used a compressed audio format. 
+//To get the best performance, we suggest that you avoid breaking the audio up mid-sentence as this may cause some context to be lost.
+app.post('/audio-process', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send({ message: 'Please upload an audio file.' });
+  }
+
+  try {
+    const fileData = fs.createReadStream(req.file.path);
+    const formData = new FormData();
+    // Include the original file name and MIME type explicitly
+    formData.append('file', fileData, {
+      filename: req.file.originalname,
+      contentType: req.file.mimetype
+    });
+    // Specify the model parameter here
+    formData.append('model', 'whisper-1'); // Adjust the model as needed
+
+    const response = await axios.post('https://api.openai.com/v1/audio/transcriptions', formData, {
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        ...formData.getHeaders(),
+      },
+    });
+
+    // Cleanup: Delete the uploaded file after processing
+    fs.unlinkSync(req.file.path);
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error processing audio:', error.response?.data || error);
+    res.status(500).send({ message: 'Error in audio processing', details: error.response?.data });
+
+    // Cleanup in case of failure
+    if (req.file?.path) {
+      fs.unlinkSync(req.file.path);
+    }
+  }
+});
+
+
 // Handles GET request to the API endpoint
 // Mainly just so error page goes away
 app.get('/create', (req, res) => {
