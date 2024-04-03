@@ -14,6 +14,7 @@ const multer = require('multer'); //Multer is a node.js middleware for handling 
 const fs = require('fs'); // Required for file system access
 const pdfParse = require('pdf-parse'); // Require pdf-parse for PDF processing
 const {openAIGenerate} = require('./OpenAI');
+const axios = require ('axios');
 
 
 // Define port
