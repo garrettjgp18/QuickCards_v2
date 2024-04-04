@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
 import {db, saveCards, getCards} from "/db.js";
 
-//data to loop through
+// Dictionary that holds values from Dexie
 const dictionary = {};
 
+// Query the database to populate dictionary
 const query = await db.card.each(card => {
   let keyword = card.keyword;
   let definition = card.definition;
   dictionary[keyword] = definition;
-  // console.log ("Keyword: " + keyword + " Definition: " + definition);
 });
-
 
 
 //functions for button clicks

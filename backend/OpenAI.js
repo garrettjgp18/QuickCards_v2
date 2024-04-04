@@ -19,6 +19,8 @@ async function openAIGenerate(numCards, schema, transcript) {
     Return them as "keywords : definition". Seperate each with "\n" Do not return anything else.
     The text is as follows: ${transcript}` }],
     model: "gpt-3.5-turbo",
+    temperature: 0.5, // Controls creativity
+    // max_tokens: 1000 // Controls limit of tokens used
   });
 
   // Send info back to React using "My Cards" endpoint?

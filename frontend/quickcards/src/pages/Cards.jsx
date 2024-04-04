@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import {db} from "/db.js";
+
+// Create dictionary to hold values from Dexie
+const dictionary = {};
+
+// Query the database to populate dictionary
+const query = await db.card.each(card => {
+    let keyword = card.keyword;
+    let definition = card.definition;
+    dictionary[keyword] = definition;
+});
 
 export default function Words(){
-
-    //dictionary loaded in from dexie
-    //data to loop through
-    const dictionary = {
-        "Hola": "Hello",
-        "aquí": "here",
-        "como estas": "how are you",
-        "No": "no",
-        "Si": "yes"
-    };
 
     //convert dictionary to an array to grab index
     const keyByIndex = Object.keys(dictionary);
