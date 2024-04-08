@@ -96,25 +96,28 @@ export default function Navbar() {
     // Once "Generate Cards" button is clicked, start this asynchronous process
     const submitData = async () => {
         console.log('submitData started');
-
-        // // Make sure file type is either PDF or audio
-        // if (!uploadedFile || fileType === "Unsupported") {
-        //     console.log("No supported file to process. Please upload a PDF or Audio file.");
-        //     return;
-        // }
-        // Calls the function that determines the extraction method to call
-        let promptResult = await mediaQueryHandler(currentId, uploadedFile);
-        console.log("transcript loaded into payload");
-
-        // Create a JSON transfer structure
-        const dataObject = {
-            mediaType: `${currentId}`, // Holds current state of ID (use mediaType in server.js)
-            numberOfCards: numberOfCards, // Holds current state of numberOfCards
-            currentSchema: currentSchema, // Holds current state of schema 
-            result: promptResult // Holds flattened extracted text
-        };
-
+    
+        let promptResult;
+    
         try {
+            // Call mediaQueryHandler to process the file based on its type, passing both type and file
+            promptResult = await mediaQueryHandler(currentId, uploadedFile);
+            console.log("transcript loaded into payload");
+    
+            // Check if promptResult is null, empty, or falsy
+            if (!promptResult) {
+                console.log("promptResult is null, empty, or falsy. Aborting further execution.");
+                return; // Exit the function
+            }
+    
+            // Create a JSON transfer structure
+            const dataObject = {
+                mediaType: `${currentId}`, // Holds current state of ID (use mediaType in server.js)
+                numberOfCards: numberOfCards, // Holds current state of numberOfCards
+                currentSchema: currentSchema, // Holds current state of schema 
+                result: promptResult // Holds flattened extracted text
+            };
+    
             // Start a fetch request using POST method and send dataObject as payload
             const response = await fetch('http://127.0.0.1:3000/create', {
                 method: 'POST',
@@ -123,44 +126,42 @@ export default function Navbar() {
                 },
                 body: JSON.stringify(dataObject) // convery into easy readible string
             });
-
+    
             console.log("fetch to OpenAI complete");
-
+    
             // If this appears, make sure both NodeJS and ReactJS clients are running in SEPARATE terminals
             if (!response.ok) {
                 throw new Error("No network response");
             }
-
+    
             // Wait for response from NodeJS server, once received, print to developer console
             const responseData = await response.json();
             console.log("waiting on OpenAI...");
             console.log("Extracted: \n", responseData.text);
-
+    
             // -- OpenAI adjustment stuff
             // split OpenAI output by end-of-line markers. Filter out empty strings
             const pairs = responseData.text.split('\n').filter(Boolean);
-
+    
             // Traverse all pairs - split each pair by ":", map keyword and definiton with no whitespace
             for (const pair of pairs) {
                 const [keyword, definition] = pair.split(':').map(item => item.trim());
                 // Enable if you need to test anything
                 // console.log("keyword: ", keyword);
                 // console.log("definition: ", definition);
-
+    
                 // save parsed information to database
                 saveCards(keyword, definition);
             }
-
-
-
-
+    
         } catch (error) {
-
-            console.log("Error sending data to server: " + error);
+            alert("Whoops! An error occured...");
+            console.log("Error in processing:", error);
         }
-
+    
         console.log("Transfer complete");
     }
+    
 
     // Asynchronously processes a PDF file by sending it to a server endpoint for processing
     async function processPDF(pdfFile) {
@@ -184,8 +185,9 @@ export default function Navbar() {
         } catch (error) {
             // Log any errors that occur during the file upload or processing
             console.error('Error processing PDF:', error);
+            alert("Whoops! There was an issue transcribing your PDF. Did you upload a file?");
             // Return a default error message to handle the error gracefully
-            return "Error in PDF processing";
+            return;
         }
     }
 
@@ -215,7 +217,8 @@ export default function Navbar() {
             return extractedAudio.text; // Adjust response.data.transcription as needed
         } catch (error) {
             console.error('Error processing audio:', error);
-            return { extractedTextArrays: ["Error in audio processing"] }; // Provide a default structure even in error cases
+            alert("Whoops!  There was an issue transcribing your audio. Did you upload a file?");
+            return; // Provide a default structure even in error cases
         }
     }
 
