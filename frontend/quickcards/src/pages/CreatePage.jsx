@@ -18,7 +18,11 @@ export default function Navbar() {
 
     // Function to update number of cards state
     const handleNumberOfCardsChange = (event) => {
-        setNumberOfCards(event.target.value);
+        const value = event.target.value;
+        // Use a regular expression to check if the value is a positive integer
+        if (/^\d+$/.test(value) || value === "") {
+            setNumberOfCards(value);
+        }
     }
 
     // Function to update the schema 
