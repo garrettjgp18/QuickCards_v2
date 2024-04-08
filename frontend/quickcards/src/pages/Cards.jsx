@@ -5,7 +5,7 @@ import {db} from "/db.js";
 const dictionary = {};
 
 // Query the database to populate dictionary
-const query = await db.card.each(card => {
+const query = db.card.each(card => {
     let keyword = card.keyword;
     let definition = card.definition;
     dictionary[keyword] = definition;
