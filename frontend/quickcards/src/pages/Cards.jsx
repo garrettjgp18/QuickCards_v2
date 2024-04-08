@@ -11,7 +11,24 @@ const query = await db.card.each(card => {
     dictionary[keyword] = definition;
 });
 
+
 export default function Words(){
+
+    //KEYBOARD FUNCTIONS
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === ' ') {
+            //flip card
+            flipCard();
+            } 
+        else if (event.key === 'ArrowRight') {
+            //next card 
+            nextCard();
+            } 
+        else if (event.key === 'ArrowLeft') {
+            //previous card
+            prevCard();
+        } 
+    });
 
     //convert dictionary to an array to grab index
     const keyByIndex = Object.keys(dictionary);
