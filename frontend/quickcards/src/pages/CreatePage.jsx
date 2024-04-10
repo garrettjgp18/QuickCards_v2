@@ -99,6 +99,10 @@ export default function Navbar() {
     // Once "Generate Cards" button is clicked, start this asynchronous process
     const submitData = async () => {
         console.log('submitData started');
+
+        //redirect to Words page
+        navigate("/words");
+
     
         let promptResult;
     
@@ -157,8 +161,6 @@ export default function Navbar() {
                 saveCards(keyword, definition);
             }
 
-            //redirect to Words page
-            navigate("/words");
 
     
         } catch (error) {
