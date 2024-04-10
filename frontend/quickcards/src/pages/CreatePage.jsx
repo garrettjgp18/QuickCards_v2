@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios'; //Axios is a promise-based HTTP Client for node.js and the browser
 import { db, saveCards, getCards } from "/db.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
 
@@ -153,6 +154,11 @@ export default function Navbar() {
                 // save parsed information to database
                 saveCards(keyword, definition);
             }
+
+            //redirect to Words page
+            const navigate = useNavigate();
+            navigate("/words");
+
     
         } catch (error) {
             alert("Whoops! An error occured...");
