@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
 
+    const navigate = useNavigate();
+
 
     // Define state variables (hooks)
     const [currentId, setCurrentId] = useState("Video");
@@ -156,7 +158,6 @@ export default function Navbar() {
             }
 
             //redirect to Words page
-            const navigate = useNavigate();
             navigate("/words");
 
     
