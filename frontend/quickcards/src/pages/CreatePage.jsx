@@ -161,6 +161,9 @@ export default function Navbar() {
                 saveCards(keyword, definition);
             }
 
+            // Reload page so new cards appear
+            window.location.reload();
+
 
     
         } catch (error) {

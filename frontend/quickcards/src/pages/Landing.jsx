@@ -27,8 +27,8 @@ export default function Landing(){
                 {/* Right Side */}
                 <div className='w-full h-[43vh] md:h-[86vh] bg-black'>
                     <div className='flex flex-col gap-8 justify-center align-middle w-full h-full p-8'>
-                        <h1 className='text-white text-5xl'>The Future of AI Flashcards</h1>
-                        <h1 className='text-white text-2xl'>Generate videos, pdfs, and audio into flashcards with precision</h1>
+                        <h1 className='text-white text-5xl'>The Future of Flashcards</h1>
+                        <h1 className='text-white text-2xl'>Studying shouldn't be time consuming or stressful.</h1>
 
                         <div className = "flex flex-row gap-8 align-middle w-full h-16">
                             <button className="bg-teal-500 rounded-md p-4 px-6 text-white hover:bg-teal-600 active:scale-95">

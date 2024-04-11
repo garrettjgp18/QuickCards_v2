@@ -6,7 +6,7 @@ import {db, saveCards, getCards} from "/db.js";
 const dictionary = {};
 
 // Query the database to populate dictionary
-const query = db.card.each(card => {
+const query = await db.card.orderBy('id').each(card => {
   let keyword = card.keyword;
   let definition = card.definition;
   dictionary[keyword] = definition;
@@ -21,20 +21,19 @@ const download = () =>{
 }
 
 const deleteWords = () =>{
-  console.log("Deleting all the words");
+  db.card.clear()
   window.location.reload();
 }
-
 //edit word button
-const editWord = (id) =>{
+const editWord = async (id) =>{
 
-  //convert the dictionary object to an array to access it by ID
-  const keyByIndex = Object.keys(dictionary)[id];
-  //print the key
-  console.log("Key: " + keyByIndex); 
-  //print the value
-  console.log("Value:" + dictionary[keyByIndex])
+  // query all Dexie data into array
+  const currentCard = await db.card.toArray();
+  // get the definition of the current card selected.
+  const changeDef = currentCard[id].definition;
 
+  // -- Testing purpose
+  console.log(changeDef);
 }
   
   
