@@ -6,7 +6,7 @@ import {db, saveCards, getCards} from "/db.js";
 const dictionary = {};
 
 // Query the database to populate dictionary
-const query = await db.card.orderBy('id').each(card => {
+const query = await db.card.each(card => {
   let keyword = card.keyword;
   let definition = card.definition;
   dictionary[keyword] = definition;
@@ -15,15 +15,74 @@ const query = await db.card.orderBy('id').each(card => {
 
 //functions for button clicks
 
-//Download CSV
-const download = () =>{
-  console.log("Downloading CSV");
+function populateExampleCards() {
+  const exampleCard1 = { keyword: 'Example 1', definition: 'This is the definition of example 1.' };
+  const exampleCard2 = { keyword: 'Example 2', definition: 'This is the definition of example 2.' };
+    // Add more example cards as needed
+  
+
+  // Insert example cards into the database
+  saveCards(exampleCard1.keyword, exampleCard1.definition);
+  db.card.add(exampleCard2)
+  //window.location.reload();
 }
 
-const deleteWords = () =>{
-  db.card.clear()
+async function convertToCSV() {
+
+  let csvRows = [['id', 'keyword', 'definition']];
+
+  try {
+
+    await db.card.each(card => {
+      //console.log(card);
+      const row = [card.id, card.keyword, card.definition];
+      csvRows.push(row);
+    });
+  } catch (error) {
+    console.error('Error adding card to database:', error);
+  }
+
+  console.log(csvRows);
+  return csvRows.join('\n');
+  
+}
+
+//Download CSV
+async function downloadCSV() {
+
+  try {
+  const csvContent = await convertToCSV();
+
+  console.log(csvContent);
+  const blob = new Blob([csvContent], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'cards.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  } catch (error) {
+    console.error('Error downloading CSV:', error);
+  }
+}
+
+
+async function deleteWords() {
+  console.log("Deleting all the words");
+
+  try {
+    // Clear the "card" table in the database
+    await db.card.clear();
+    console.log('All cards deleted from the database.');
+  } catch (error) {
+    console.error('Error deleting cards from the database:', error);
+  }
+
   window.location.reload();
 }
+
 //edit word button
 const editWord = async (id) =>{
 
@@ -65,7 +124,7 @@ export default function Words(){
                       </Link>
 
                     {/* Download CSV -> Downloads all words as CSV file - DOES NOT REDIRECT*/}
-                      <button onClick = {download} className="bg-sky-800 rounded-md p-4 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2">
+                      <button onClick = {downloadCSV} className="bg-sky-800 rounded-md p-4 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2">
                           <span className="text-2xl"><i className="bi-download"></i></span>
                       </button>
 
