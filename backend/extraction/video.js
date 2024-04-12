@@ -123,9 +123,9 @@ function YouTubeVideoId(url) {
 // make sure you call the method just like this withi the server.js endpoint
 // ensure you pass in the formatted video ID and not the entire URL.
 
-var youtubeUrl = "https://www.youtube.com/watch?v=IYbkZgR77rs";
-var videoId = YouTubeVideoId(youtubeUrl);
-reteriveTranscript(videoId);
+//var youtubeUrl = "https://www.youtube.com/watch?v=IYbkZgR77rs";
+//var videoId = YouTubeVideoId(youtubeUrl);
+//reteriveTranscript(videoId);
 
 // Export the reteriveTranscript function for use in other modules
 module.exports = { reteriveTranscript ,YouTubeVideoId };
