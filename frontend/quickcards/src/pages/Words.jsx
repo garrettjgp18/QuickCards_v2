@@ -95,6 +95,11 @@ const editWord = async (id) =>{
   console.log(changeDef);
 }
   
+//delete a single word
+const deleteWord = async(id) =>{
+  console.log(id);
+}
+
   
 export default function Words(){
     return (
@@ -150,10 +155,14 @@ export default function Words(){
                     </td>
                                    
                      {/* Edit Button on far right of table - onclick gets ID and toggles modal */}
-                    <td className="px-6 py-4 whitespace-no-wrap float-right mr-4">
+                    <td className="px-6 py-4 whitespace-no-wrap float-right mr-4 flex flex-row gap-4">
                       <span onClick={() => editWord(index)} className="text-2xl text-gray-400 hover:text-gray-500 hover:cursor-pointer active:scale-95">
                         <i className="bi-pencil-fill"></i>
                       </span>
+                      <span onClick={() => deleteWord(index)} className="text-2xl text-red-400 hover:text-red-500 hover:cursor-pointer active:scale-95">
+                        <i className="bi-trash-fill"></i>
+                      </span>
+
                     </td>
                   </tr>
                 ))}
