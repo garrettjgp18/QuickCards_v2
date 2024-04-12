@@ -260,7 +260,7 @@ export default function Navbar() {
                 promptResult = await processAudio(file);
                 break;
             default:
-                promptResult = "TEXT";
+                promptResult = "Make keywords based off the schema given to you.";
                 break;
         }
 

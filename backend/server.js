@@ -39,15 +39,15 @@ app.use(cors());
 app.post('/create', async (req, res) => {
   const recievedData = req.body;
   // Format data and display in terminal running NodeJS to ensure data is correct
-  console.log(
-    `\nRecieved from React:\n
-    Media Type: ${recievedData.mediaType}\n 
-    Number of Cards = ${recievedData.numberOfCards}\n 
-    Schema: ${recievedData.currentSchema}\n 
-    Extracted: ${recievedData.result}\n\n`);
+  // console.log(
+  //   `\nRecieved from React:\n
+  //   Media Type: ${recievedData.mediaType}\n 
+  //   Number of Cards = ${recievedData.numberOfCards}\n 
+  //   Schema: ${recievedData.currentSchema}\n 
+  //   Extracted: ${recievedData.result}\n\n`);
 
     // Call OpenAI method and pass all variables in
-    const generated = await openAIGenerate(recievedData.numberOfCards, recievedData.currentSchema, recievedData.result);
+    const generated = await openAIGenerate(recievedData.mediaType, recievedData.numberOfCards, recievedData.currentSchema, recievedData.result);
 
 
   // Send message back to React page (line 53 + 54 from CreatePage.jsx)
@@ -119,7 +119,7 @@ app.post('/pdf-process', upload.single('file'), async (req, res) => {
             textArrays.push(currentArray);
         }
           
-        console.log("Extracted Text Arrays:", textArrays); // Optionally log the arrays for verification
+        // console.log("Extracted Text Arrays:", textArrays); // Optionally log the arrays for verification
 
         // Send the arrays of extracted text back to the client side
         // TODO: Call OpenAI method from OpenAI.js, pass in textArrays
