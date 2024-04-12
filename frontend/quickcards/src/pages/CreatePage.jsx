@@ -205,8 +205,13 @@ export default function Navbar() {
 
 
     async function processVideo(videoURL) {
-
-        const response = await axios.post('https://127.0.0.1:3000/video-process');
+        
+        
+        const response = await axios.post(`http://127.0.0.1:3000/video-process`, {videoURL:videoURL} );
+        const extractedTranscript = response.data;
+        return extractedTranscript;
+        
+       
 
     }
 

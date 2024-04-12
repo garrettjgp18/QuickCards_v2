@@ -16,6 +16,7 @@ const pdfParse = require('pdf-parse'); // Require pdf-parse for PDF processing
 const {openAIGenerate} = require('./OpenAI');
 const axios = require ('axios');
 const FormData = require('form-data');
+const { reteriveTranscript, YouTubeVideoId } = require('./extraction/video');
 
 
 // Define port
@@ -57,7 +58,21 @@ app.post('/create', async (req, res) => {
 
 
 // Endpoint for video processing - send paylaod here, configure to process accordingly.
-app.post('/video-process', (req, res) => {
+app.post('/video-process', async (req, res) => {
+  const recievedData = req.body;
+  
+    //Get videoID from the url submitted by the user
+   const videoID = YouTubeVideoId(recievedData.videoURL);
+    //Get Transcript for the video submitted by user
+    const transcript =   await reteriveTranscript(videoID);
+    //Send trnscript back to front end
+   // console.log(transcript);
+    res.send( transcript );
+    
+    
+  
+
+
 
 });
 
