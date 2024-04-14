@@ -41,3 +41,22 @@ export async function getCards() {
     }
 
 }
+
+export async function updateCard(cid, ndefinition) {
+    console.log('update function started');
+    try {
+      await db.open();
+  
+      const card = await db.card.get(cid);
+  
+      if (card) {
+        card.definition = ndefinition;
+        await db.card.update(cid, { definition: ndefinition });
+        console.log('Card updated successfully:', card);
+        return card;
+      }
+    } catch (error) {
+      console.error('Error updating card:', error);
+      return null;
+    }
+  }
