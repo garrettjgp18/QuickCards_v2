@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
-import {db, saveCards, getCards} from "/db.js";
+import {db, saveCards, getCards, updateCard} from "/db.js";
 
 // Dictionary that holds values from Dexie
 const dictionary = {};
@@ -22,8 +22,8 @@ function populateExampleCards() {
   
 
   // Insert example cards into the database
-  saveCards(exampleCard1.keyword, exampleCard1.definition);
-  db.card.add(exampleCard2)
+  //saveCards(exampleCard1.keyword, exampleCard1.definition);
+  db.card.add(exampleCard1)
   //window.location.reload();
 }
 
@@ -86,20 +86,55 @@ async function deleteWords() {
 //edit word button
 const editWord = async (id) =>{
 
-  // query all Dexie data into array
-  const currentCard = await db.card.toArray();
-  // get the definition of the current card selected.
-  const changeDef = currentCard[id].definition;
+  try {
 
-  // -- Testing purpose
-  console.log(changeDef);
+    await db.open();
+    // query all Dexie data into array
+    // get the definition of the current card selected.
+    
+
+    const cell = document.getElementById(id + 'a');
+    cell.contentEditable = true;
+    cell.focus();
+
+    cell.addEventListener('keypress', async function(event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        const newDefinition = cell.textContent.trim(); // Remove leading/trailing whitespace
+        await updateCard(id, newDefinition); // Pass only the new definition
+        cell.contentEditable = false;
+      }
+    });
+  
+  } catch (error) {
+    console.error('Error updating word:', error);
+  }
+
+  
 }
   
 //delete a single word
-const deleteWord = async(id) =>{
-  console.log(id);
-}
 
+const deleteWord = async (index) => {
+  try {
+    // Open the Dexie database connection if not already open
+    await db.open();
+
+    // Get the word (card) from the database using its index
+    const wordToDelete = await db.card.get(index);
+
+    if (wordToDelete) {
+      // If the word (card) exists, delete it from the database
+      await db.card.delete(index);
+      console.log('Word deleted successfully:', wordToDelete);
+      // Optionally, you can perform additional actions after deletion
+    } else {
+      console.error('Word not found with index:', index);
+    }
+  } catch (error) {
+    console.error('Error deleting word:', error);
+  }
+};
   
 export default function Words(){
     return (
@@ -129,7 +164,7 @@ export default function Words(){
                       </Link>
 
                     {/* Download CSV -> Downloads all words as CSV file - DOES NOT REDIRECT*/}
-                      <button onClick = {downloadCSV} className="bg-sky-800 rounded-md p-4 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2">
+                      <button onClick = {downloadCSV} className="bg-sky-800 rounded-md p-4 m-4 text-white hover:bg-sky-900 active:scale-95 flex flex-row gap-2" id='dload'>
                           <span className="text-2xl"><i className="bi-download"></i></span>
                       </button>
 
@@ -147,10 +182,10 @@ export default function Words(){
                 {/* Loop through "dictionary" object -  outputs vocabulary words in cells */}
                 {Object.entries(dictionary).map(([word, definition], index) => (
                   <tr key={index}>
-                    <td className="px-6 py-4 whitespace-no-wrap">
+                    <td className="px-6 py-4 whitespace-no-wrap" id={index}>
                       {word}
                     </td>
-                    <td className="px-6 py-4 whitespace-no-wrap">
+                    <td className="px-6 py-4 whitespace-no-wrap" id={index + 'a'}>
                       {definition}
                     </td>
                                    
